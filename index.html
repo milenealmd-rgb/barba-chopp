@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barba&Chopp - Gestão</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f6f8;--card:#fff;--primary:#111827;--secondary:#6b7280;--blue:#2563eb;--green:#16a34a;--red:#dc2626;--border:#e5e7eb;--radius:14px;--orange:#ea580c}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--primary);min-height:100vh}
+.container{max-width:480px;margin:auto;padding:16px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.logo{width:48px;height:48px;background:var(--primary);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff}
+.header h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.header p{font-size:12px;color:var(--secondary)}
+.tabs{display:flex;gap:4px;background:#e5e7eb;border-radius:12px;padding:4px;margin-bottom:16px}
+.tab{flex:1;text-align:center;padding:10px 6px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--secondary);transition:all .2s;white-space:nowrap}
+.tab.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04)}
+.card-title{font-size:11px;font-weight:600;color:var(--secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:500;margin-bottom:4px;color:var(--secondary)}
+.field input,.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none;transition:border .2s}
+.field input:focus,.field select:focus{border-color:var(--blue)}
+.btn{width:100%;padding:12px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{opacity:.85}
+.btn-sm{width:auto;padding:6px 12px;font-size:12px;border-radius:8px}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--primary)}
+.btn-outline:hover{background:#f3f4f6}
+.btn-green{background:var(--green)}
+.btn-red{background:var(--red);font-size:12px;padding:6px 10px;border-radius:8px;border:none;color:#fff;cursor:pointer}
+.panel{display:none}.panel.active{display:block}
+.day-card{background:#f9fafb;border-radius:10px;padding:12px;margin-bottom:8px}
+.day-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.day-card-header .date{font-size:14px;font-weight:600}
+.day-card-header .actions{display:flex;gap:4px}
+.day-card-row{font-size:13px;color:var(--secondary);padding:2px 0;display:flex;justify-content:space-between}
+.day-card-row.total{font-weight:600;color:var(--primary);border-top:1px solid var(--border);margin-top:4px;padding-top:6px}
+.gasto-line{font-size:12px;color:var(--secondary);padding:2px 0;display:flex;justify-content:space-between}
+.gasto-line .desc{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{text-align:center;color:var(--secondary);font-size:13px;padding:24px 0}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.result-card{border-radius:12px;padding:14px;text-align:center}
+.result-card .label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--secondary);font-weight:500}
+.result-card .value{font-size:18px;font-weight:700}
+.rc-green{background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.15)}.rc-green .value{color:var(--green)}
+.rc-blue{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.15)}.rc-blue .value{color:var(--blue)}
+.rc-red{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.15)}.rc-red .value{color:var(--red)}
+.rc-orange{background:rgba(234,88,12,.06);border:1px solid rgba(234,88,12,.15)}.rc-orange .value{color:var(--orange)}
+.rc-full{grid-column:1/-1}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.detail-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #f3f4f6}
+.detail-row:last-child{border:none}
+.detail-row .lbl{color:var(--secondary)}
+.detail-row .val{font-weight:600}
+.detail-row .val.green{color:var(--green)}.detail-row .val.red{color:var(--red)}.detail-row .val.blue{color:var(--blue)}.detail-row .val.orange{color:var(--orange)}
+.detail-row.total{font-weight:700;font-size:14px;border-top:2px solid var(--border);padding-top:10px;margin-top:4px}
+.detail-row.total .lbl{color:var(--primary)}
+.record-item{font-size:12px;color:var(--secondary);padding:4px 0;border-bottom:1px solid #f8f9fa;display:flex;justify-content:space-between}
+.record-item:last-child{border:none}
+.section-card{background:#f9fafb;border-radius:10px;padding:12px;margin-bottom:10px}
+.section-card-title{font-size:11px;font-weight:600;color:var(--primary);margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.filter-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.filter-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:#fff;cursor:pointer;color:var(--secondary);transition:all .2s}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.nav-row .period{font-size:14px;font-weight:600;text-align:center;flex:1}
+.nav-btn{background:none;border:1.5px solid var(--border);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--primary)}
+.nav-btn:hover{background:#f3f4f6}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:20px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.config-badge{display:inline-flex;align-items:center;gap:4px;background:#f3f4f6;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--secondary);cursor:pointer}
+.config-badge:hover{background:#e5e7eb}
+/* Firebase status indicator */
+.fb-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--secondary);margin-left:6px}
+.fb-dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;transition:background .3s}
+.fb-dot.connected{background:var(--green)}
+.fb-dot.error{background:var(--red)}
+.loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.75);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+.loading-overlay.show{display:flex}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div style="font-size:13px;color:var(--secondary)">Carregando dados...</div>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">✂️</div>
+    <div style="flex:1">
+      <h1>Barba&Chopp</h1>
+      <p>Gestão da Barbearia <span class="fb-status"><span class="fb-dot" id="fbDot"></span><span id="fbStatusText">conectando...</span></span></p>
+    </div>
+    <div class="config-badge" onclick="openConfig()">⚙️ <span id="configNames">Dono / Sócio</span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('dia',this)">📅 Dia</div>
+    <div class="tab" onclick="showTab('gastos',this)">🧾 Gastos</div>
+    <div class="tab" onclick="showTab('fechamento',this)">📊 Fechamento</div>
+    <div class="tab" onclick="showTab('config',this)">⚙️</div>
+  </div>
+
+  <!-- DIA -->
+  <div id="dia" class="panel active">
+    <div class="card">
+      <div class="card-title">📅 Registro diário</div>
+      <div class="field"><label>Data</label><input type="date" id="dData"></div>
+      <div class="field"><label>Faturamento Barbearia (R$)</label><input type="number" id="dBarb" placeholder="0,00" step="0.01"></div>
+      <div class="field"><label>Faturamento Funcionário (R$)</label><input type="number" id="dFunc" placeholder="0,00" step="0.01"></div>
+      <div class="field">
+        <label>Comissão do Funcionário: <strong id="dComissaoLabel">50%</strong></label>
+        <input type="range" id="dComissao" min="0" max="100" value="50" step="1" style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px" oninput="document.getElementById('dComissaoLabel').textContent=this.value+'%'">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
+      </div>
+      <button class="btn" onclick="addDia()">💰 Salvar dia</button>
+      <p style="font-size:11px;color:var(--secondary);margin-top:8px;text-align:center">* Se já existir registro nessa data, os valores serão somados</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Dias cadastrados (<span id="diasCount">0</span>)</div>
+      <div id="listaDias"></div>
+    </div>
+  </div>
+
+  <!-- GASTOS -->
+  <div id="gastos" class="panel">
+    <div class="card">
+      <div class="card-title">🧾 Registrar gasto</div>
+      <div class="field"><label>Data</label><input type="date" id="gData"></div>
+      <div class="field"><label>Descrição</label><input type="text" id="gDesc" placeholder="Ex: Produto, aluguel..."></div>
+      <div class="field"><label>Valor (R$)</label><input type="number" id="gValor" placeholder="0,00" step="0.01"></div>
+      <div class="field"><label>Responsável</label>
+        <select id="gResp"><option value="ambos">Ambos</option><option value="dono" id="optDono">Só Dono</option><option value="socio" id="optSocio">Só Sócio</option></select>
+      </div>
+      <button class="btn" onclick="addGasto()">💰 Salvar gasto</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Gastos registrados (<span id="gastosCount">0</span>)</div>
+      <div id="listaGastos"></div>
+    </div>
+  </div>
+
+  <!-- FECHAMENTO -->
+  <div id="fechamento" class="panel">
+    <div class="card">
+      <div class="card-title">📊 Fechamento</div>
+      <div class="filter-row">
+        <div class="filter-btn active" onclick="setMode('semana',this)">Semana</div>
+        <div class="filter-btn" onclick="setMode('mes',this)">Mês</div>
+        <div class="filter-btn" onclick="setMode('custom',this)">Personalizado</div>
+      </div>
+      <div class="nav-row" id="navRow">
+        <button class="nav-btn" onclick="navPrev()">‹</button>
+        <div class="period" id="periodLabel">—</div>
+        <button class="nav-btn" onclick="navNext()">›</button>
+      </div>
+      <div id="customRange" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label>Início</label><input type="date" id="sIni"></div>
+          <div class="field"><label>Fim</label><input type="date" id="sFim"></div>
+        </div>
+      </div>
+      <button class="btn" onclick="calcular()">📊 Calcular</button>
+    </div>
+    <div id="resultados" style="display:none">
+      <div id="splitWarn" style="text-align:center;font-size:12px;font-weight:600;padding:8px 12px;border-radius:10px;background:#f3f4f6;margin-bottom:8px"></div>
+      <div class="results">
+        <div class="result-card rc-green"><div class="label">Faturamento Bruto</div><div class="value" id="rBruto"></div></div>
+        <div class="result-card rc-red"><div class="label">Gastos Totais</div><div class="value" id="rGastos"></div></div>
+        <div class="result-card rc-orange"><div class="label">Pagar Funcionário</div><div class="value" id="rPagarFunc"></div></div>
+        <div class="result-card rc-green"><div class="label">Receita Barbearia</div><div class="value" id="rReceita"></div></div>
+        <div class="result-card rc-blue rc-full"><div class="label">Lucro (Receita − Gastos)</div><div class="value" id="rLucro"></div></div>
+        <div class="result-card rc-green"><div class="label" id="lblVoce">🧑 Dono (60%)</div><div class="value" id="rVoce"></div></div>
+        <div class="result-card rc-blue"><div class="label" id="lblSocio">👥 Sócio (40%)</div><div class="value" id="rSocio"></div></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="card-title">📋 Detalhamento</div>
+        <div class="detail-row"><span class="lbl">Faturamento Barbearia</span><span class="val" id="ddBarb"></span></div>
+        <div class="detail-row"><span class="lbl">Faturamento Func (bruto)</span><span class="val" id="ddFuncBruto"></span></div>
+        <div class="detail-row"><span class="lbl">→ Funcionário (comissão)</span><span class="val orange" id="ddFuncFunc"></span></div>
+        <div class="detail-row"><span class="lbl">→ Barbearia (restante)</span><span class="val green" id="ddFuncBarb"></span></div>
+        <div class="divider"></div>
+        <div class="detail-row"><span class="lbl">= Receita barbearia (barb + parte func)</span><span class="val green" id="ddReceita"></span></div>
+        <div class="detail-row"><span class="lbl">− Gastos compartilhados</span><span class="val red" id="ddGastos"></span></div>
+        <div class="detail-row total"><span class="lbl">= Lucro</span><span class="val green" id="ddLucro"></span></div>
+        <div class="divider"></div>
+        <div class="detail-row"><span class="lbl" id="ddVoceLbl">Dono (60% do lucro)</span><span class="val blue" id="ddVoce"></span></div>
+        <div class="detail-row"><span class="lbl" id="ddGVLbl">− Gastos só do dono</span><span class="val red" id="ddGV"></span></div>
+        <div class="detail-row total"><span class="lbl" id="ddVoceFLbl">= Dono recebe</span><span class="val green" id="ddVoceFinal"></span></div>
+        <div class="divider"></div>
+        <div class="detail-row"><span class="lbl" id="ddSocioLbl">Sócio (40% do lucro)</span><span class="val blue" id="ddSocio"></span></div>
+        <div class="detail-row"><span class="lbl" id="ddGSLbl">− Gastos só do sócio</span><span class="val red" id="ddGS"></span></div>
+        <div class="detail-row total"><span class="lbl" id="ddSocioFLbl">= Sócio recebe</span><span class="val green" id="ddSocioFinal"></span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📑 Registros do período</div>
+        <div class="section-card"><div class="section-card-title">📅 Faturamento por dia</div><div id="recDiasList"></div></div>
+        <div class="section-card"><div class="section-card-title">🧾 Gastos por dia</div><div id="recGastosList"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIG -->
+  <div id="config" class="panel">
+    <div class="card">
+      <div class="card-title">⚙️ Configurações</div>
+      <div class="field"><label>Nome do Dono</label><input type="text" id="cfgDono" placeholder="Ex: João"></div>
+      <div class="field"><label>Nome do Sócio</label><input type="text" id="cfgSocio" placeholder="Ex: Pedro"></div>
+      <button class="btn btn-green" onclick="saveConfig()">✅ Salvar nomes</button>
+    </div>
+    <div class="card">
+      <div class="card-title">🔥 Status Firebase</div>
+      <div style="font-size:13px;color:var(--secondary);display:flex;align-items:center;gap:8px;padding:8px 0">
+        <span class="fb-dot" id="fbDot2"></span>
+        <span id="fbStatusText2">Verificando conexão...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal edição -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3 id="editTitle">Editar dia</h3>
+    <div class="field"><label>Faturamento Barbearia (R$)</label><input type="number" id="editBarb" step="0.01"></div>
+    <div class="field"><label>Faturamento Funcionário (R$)</label><input type="number" id="editFunc" step="0.01"></div>
+    <div class="field">
+      <label>Comissão do Funcionário: <strong id="editComissaoLabel">50%</strong></label>
+      <input type="range" id="editComissao" min="0" max="100" value="50" step="1" style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px" oninput="document.getElementById('editComissaoLabel').textContent=this.value+'%'">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn btn-green" style="flex:1" onclick="saveEdit()">Salvar</button>
+      <button class="btn btn-outline" style="flex:1" onclick="closeEdit()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, get, remove, onValue, push, child, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAV1D-D2tN_-Z52hZBvSq_81J2qPEKWzLQ",
+  authDomain: "barbaechopp.firebaseapp.com",
+  databaseURL: "https://barbaechopp-default-rtdb.firebaseio.com",
+  projectId: "barbaechopp",
+  storageBucket: "barbaechopp.firebasestorage.app",
+  messagingSenderId: "20511961842",
+  appId: "1:20511961842:web:9f2e5a23aaf156d143166b",
+  measurementId: "G-G4P8NMWXGW"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ---- State ----
+let dias = [];
+let gastos = [];
+let cfg = { dono: "Dono", socio: "Sócio" };
+let mode = 'semana', navOffset = 0, editKey = null;
+
+// ---- Helpers ----
+const f = v => 'R$ ' + v.toFixed(2).replace('.', ',');
+const fmtD = d => { const [y, m, day] = d.split('-'); return day + '/' + m + '/' + y; };
+const todayStr = () => new Date().toISOString().split('T')[0];
+
+function setFbStatus(state) {
+  const dot1 = document.getElementById('fbDot');
+  const dot2 = document.getElementById('fbDot2');
+  const txt1 = document.getElementById('fbStatusText');
+  const txt2 = document.getElementById('fbStatusText2');
+  const map = {
+    connecting: { cls: '', text: 'conectando...' },
+    connected: { cls: 'connected', text: 'Firebase conectado ✓' },
+    error: { cls: 'error', text: 'Erro de conexão' }
+  };
+  const s = map[state] || map.connecting;
+  [dot1, dot2].forEach(d => { if (d) { d.className = 'fb-dot'; if (s.cls) d.classList.add(s.cls); } });
+  if (txt1) txt1.textContent = state === 'connected' ? '✓ online' : state === 'error' ? '✗ offline' : 'conectando...';
+  if (txt2) txt2.textContent = s.text;
+}
+
+function showLoading(v) {
+  document.getElementById('loadingOverlay').classList.toggle('show', v);
+}
+
+// ---- Firebase listeners (realtime) ----
+function initListeners() {
+  // Dias
+  onValue(ref(db, 'dias'), snap => {
+    dias = [];
+    if (snap.exists()) {
+      snap.forEach(child => {
+        dias.push({ _key: child.key, ...child.val() });
+      });
+    }
+    renderDias();
+    setFbStatus('connected');
+    showLoading(false);
+  }, err => {
+    console.error('dias error', err);
+    setFbStatus('error');
+    showLoading(false);
+  });
+
+  // Gastos
+  onValue(ref(db, 'gastos'), snap => {
+    gastos = [];
+    if (snap.exists()) {
+      snap.forEach(child => {
+        gastos.push({ _key: child.key, ...child.val() });
+      });
+    }
+    renderGastos();
+    renderDias(); // refresh days to show gastos
+  });
+
+  // Config
+  onValue(ref(db, 'cfg'), snap => {
+    if (snap.exists()) {
+      cfg = snap.val();
+    }
+    applyConfig();
+  });
+}
+
+// ---- Config ----
+function applyConfig() {
+  document.getElementById('configNames').textContent = cfg.dono + ' / ' + cfg.socio;
+  document.getElementById('cfgDono').value = cfg.dono;
+  document.getElementById('cfgSocio').value = cfg.socio;
+  document.getElementById('optDono').textContent = 'Só ' + cfg.dono;
+  document.getElementById('optSocio').textContent = 'Só ' + cfg.socio;
+}
+
+window.saveConfig = async function () {
+  cfg.dono = document.getElementById('cfgDono').value || 'Dono';
+  cfg.socio = document.getElementById('cfgSocio').value || 'Sócio';
+  try {
+    await set(ref(db, 'cfg'), cfg);
+    applyConfig();
+    showTab('dia', document.querySelectorAll('.tab')[0]);
+  } catch (e) {
+    alert('Erro ao salvar configuração: ' + e.message);
+  }
+};
+
+window.openConfig = function () { showTab('config', document.querySelectorAll('.tab')[3]); };
+
+window.showTab = function (id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if (id === 'fechamento') { navOffset = 0; updatePeriod(); }
+};
+
+// ---- DIA ----
+window.addDia = async function () {
+  const data = document.getElementById('dData').value;
+  const barb = +(document.getElementById('dBarb').value) || 0;
+  const func = +(document.getElementById('dFunc').value) || 0;
+  const comissao = +(document.getElementById('dComissao').value) / 100;
+  if (!data) return;
+
+  try {
+    const existing = dias.find(d => d.data === data);
+    if (existing) {
+      // Para soma de dias, recalcula comissão como média ponderada
+      const prevFunc = existing.func || 0;
+      const prevComissao = existing.comissao !== undefined ? existing.comissao : 0.5;
+      const totalFunc = prevFunc + func;
+      const newComissao = totalFunc > 0 ? ((prevFunc * prevComissao) + (func * comissao)) / totalFunc : comissao;
+      await update(ref(db, 'dias/' + existing._key), {
+        barbearia: (existing.barbearia || 0) + barb,
+        func: totalFunc,
+        comissao: newComissao
+      });
+    } else {
+      await push(ref(db, 'dias'), { data, barbearia: barb, func, comissao });
+    }
+    document.getElementById('dBarb').value = '';
+    document.getElementById('dFunc').value = '';
+    document.getElementById('dComissao').value = 50;
+    document.getElementById('dComissaoLabel').textContent = '50%';
+  } catch (e) {
+    alert('Erro ao salvar: ' + e.message);
+  }
+};
+
+window.removeDia = async function (key) {
+  if (!confirm('Remover este dia?')) return;
+  try {
+    await remove(ref(db, 'dias/' + key));
+  } catch (e) {
+    alert('Erro ao remover: ' + e.message);
+  }
+};
+
+window.openEdit = function (key) {
+  editKey = key;
+  const d = dias.find(x => x._key === key);
+  if (!d) return;
+  document.getElementById('editTitle').textContent = 'Editar ' + fmtD(d.data);
+  document.getElementById('editBarb').value = d.barbearia;
+  document.getElementById('editFunc').value = d.func;
+  const comissaoPct = Math.round((d.comissao !== undefined ? d.comissao : 0.5) * 100);
+  document.getElementById('editComissao').value = comissaoPct;
+  document.getElementById('editComissaoLabel').textContent = comissaoPct + '%';
+  document.getElementById('editModal').classList.add('show');
+};
+
+window.closeEdit = function () {
+  document.getElementById('editModal').classList.remove('show');
+  editKey = null;
+};
+
+window.saveEdit = async function () {
+  if (!editKey) return;
+  try {
+    await update(ref(db, 'dias/' + editKey), {
+      barbearia: +(document.getElementById('editBarb').value) || 0,
+      func: +(document.getElementById('editFunc').value) || 0,
+      comissao: +(document.getElementById('editComissao').value) / 100
+    });
+    closeEdit();
+  } catch (e) {
+    alert('Erro ao salvar: ' + e.message);
+  }
+};
+
+function renderDias() {
+  document.getElementById('diasCount').textContent = dias.length;
+  if (!dias.length) {
+    document.getElementById('listaDias').innerHTML = '<div class="empty">Nenhum dia cadastrado</div>';
+    return;
+  }
+  let sorted = [...dias].sort((a, b) => b.data.localeCompare(a.data));
+  let gastosByDate = {};
+  gastos.forEach(g => { if (!gastosByDate[g.data]) gastosByDate[g.data] = []; gastosByDate[g.data].push(g); });
+
+  document.getElementById('listaDias').innerHTML = sorted.map(d => {
+    let gList = gastosByDate[d.data] || [];
+    let gastosHtml = gList.length
+      ? '<div style="margin-top:6px;border-top:1px solid #e5e7eb;padding-top:6px"><div style="font-size:10px;font-weight:600;color:var(--secondary);text-transform:uppercase;margin-bottom:2px">Gastos do dia</div>'
+        + gList.map(g => '<div class="gasto-line"><span class="desc">' + g.descricao + '</span><span style="color:var(--red)">' + f(g.valor) + '</span></div>').join('')
+        + '</div>'
+      : '';
+    let total = (d.barbearia || 0) + (d.func || 0);
+    return '<div class="day-card">'
+      + '<div class="day-card-header"><span class="date">' + fmtD(d.data) + '</span>'
+      + '<div class="actions">'
+      + '<button class="btn btn-sm btn-outline" onclick="openEdit(\'' + d._key + '\')">✏️</button>'
+      + '<button class="btn-red" onclick="removeDia(\'' + d._key + '\')">🗑️</button>'
+      + '</div></div>'
+      + '<div class="day-card-row"><span>Barbearia</span><span>' + f(d.barbearia || 0) + '</span></div>'
+      + '<div class="day-card-row"><span>Funcionário <span style="font-size:10px;color:var(--blue)">' + Math.round((d.comissao !== undefined ? d.comissao : 0.5)*100) + '% comissão</span></span><span>' + f(d.func || 0) + '</span></div>'
+      + '<div class="day-card-row total"><span>Total</span><span>' + f(total) + '</span></div>'
+      + gastosHtml + '</div>';
+  }).join('');
+}
+
+// ---- GASTOS ----
+window.addGasto = async function () {
+  const data = document.getElementById('gData').value;
+  const desc = document.getElementById('gDesc').value;
+  const valor = +(document.getElementById('gValor').value) || 0;
+  const resp = document.getElementById('gResp').value;
+  if (!data || !valor) return;
+  try {
+    await push(ref(db, 'gastos'), { data, descricao: desc, valor, resp });
+    document.getElementById('gDesc').value = '';
+    document.getElementById('gValor').value = '';
+  } catch (e) {
+    alert('Erro ao salvar gasto: ' + e.message);
+  }
+};
+
+window.removeGasto = async function (key) {
+  if (!confirm('Remover este gasto?')) return;
+  try {
+    await remove(ref(db, 'gastos/' + key));
+  } catch (e) {
+    alert('Erro ao remover: ' + e.message);
+  }
+};
+
+function renderGastos() {
+  document.getElementById('gastosCount').textContent = gastos.length;
+  if (!gastos.length) {
+    document.getElementById('listaGastos').innerHTML = '<div class="empty">Nenhum gasto registrado</div>';
+    return;
+  }
+  let byDate = {};
+  gastos.forEach(g => { if (!byDate[g.data]) byDate[g.data] = []; byDate[g.data].push(g); });
+  let dates = Object.keys(byDate).sort((a, b) => b.localeCompare(a));
+  const rl = { ambos: 'Ambos', dono: cfg.dono, socio: cfg.socio };
+
+  document.getElementById('listaGastos').innerHTML = dates.map(date => {
+    let items = byDate[date];
+    let totalDia = items.reduce((s, g) => s + g.valor, 0);
+    return '<div class="day-card">'
+      + '<div class="day-card-header"><span class="date">' + fmtD(date) + '</span><span style="font-size:13px;font-weight:600;color:var(--red)">' + f(totalDia) + '</span></div>'
+      + items.map(g =>
+        '<div class="gasto-line"><span class="desc">' + g.descricao + ' <span style="font-size:10px;color:var(--secondary)">(' + rl[g.resp] + ')</span></span>'
+        + '<span style="display:flex;align-items:center;gap:4px"><span style="color:var(--red)">' + f(g.valor) + '</span>'
+        + '<button class="btn-red" style="padding:2px 6px;font-size:10px" onclick="removeGasto(\'' + g._key + '\')">✕</button></span></div>'
+      ).join('')
+      + '</div>';
+  }).join('');
+}
+
+// ---- FECHAMENTO ----
+function getWeekRange(offset) {
+  let d = new Date(); d.setDate(d.getDate() + offset * 7);
+  let day = d.getDay(), diff = day === 0 ? -6 : 1 - day;
+  let mon = new Date(d); mon.setDate(d.getDate() + diff);
+  let sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  return { ini: mon.toISOString().split('T')[0], fim: sun.toISOString().split('T')[0] };
+}
+
+function getMonthRange(offset) {
+  let d = new Date(); d.setMonth(d.getMonth() + offset);
+  let first = new Date(d.getFullYear(), d.getMonth(), 1);
+  let last = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  return { ini: first.toISOString().split('T')[0], fim: last.toISOString().split('T')[0] };
+}
+
+window.setMode = function (m, el) {
+  mode = m; navOffset = 0;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('customRange').style.display = m === 'custom' ? 'block' : 'none';
+  document.getElementById('navRow').style.display = m === 'custom' ? 'none' : 'flex';
+  updatePeriod();
+};
+
+window.navPrev = function () { navOffset--; updatePeriod(); };
+window.navNext = function () { navOffset++; updatePeriod(); };
+
+function updatePeriod() {
+  if (mode === 'custom') return;
+  let r = mode === 'semana' ? getWeekRange(navOffset) : getMonthRange(navOffset);
+  document.getElementById('periodLabel').textContent = fmtD(r.ini) + ' — ' + fmtD(r.fim);
+  document.getElementById('sIni').value = r.ini;
+  document.getElementById('sFim').value = r.fim;
+}
+
+window.calcular = function () {
+  let ini, fim;
+  if (mode === 'custom') {
+    ini = document.getElementById('sIni').value;
+    fim = document.getElementById('sFim').value;
+  } else {
+    let r = mode === 'semana' ? getWeekRange(navOffset) : getMonthRange(navOffset);
+    ini = r.ini; fim = r.fim;
+  }
+  if (!ini || !fim) return;
+
+  let dsel = dias.filter(d => d.data >= ini && d.data <= fim);
+  let gsel = gastos.filter(g => g.data >= ini && g.data <= fim);
+
+  let totalBarb = 0, totalFunc = 0, totalFuncParaFunc = 0, totalFuncParaBarb = 0;
+  dsel.forEach(d => {
+    const comissao = d.comissao !== undefined ? d.comissao : 0.5;
+    totalBarb += (d.barbearia || 0);
+    totalFunc += (d.func || 0);
+    totalFuncParaFunc += (d.func || 0) * comissao;
+    totalFuncParaBarb += (d.func || 0) * (1 - comissao);
+  });
+
+  let fatBruto = totalBarb + totalFunc;
+  let funcParaFunc = totalFuncParaFunc;
+  let funcParaBarb = totalFuncParaBarb;
+  let receitaBarbearia = totalBarb + funcParaBarb;
+
+  let ga = 0, gv = 0, gs = 0;
+  gsel.forEach(g => {
+    if (g.resp === 'ambos') ga += g.valor;
+    if (g.resp === 'dono') gv += g.valor;
+    if (g.resp === 'socio') gs += g.valor;
+  });
+  let gastosTotais = ga + gv + gs;
+  let lucro = receitaBarbearia - ga;
+
+  // Divisão: lucro positivo = 60/40 (dono/sócio); prejuízo = 50/50
+  const isLucro = lucro >= 0;
+  const pctDono = isLucro ? 0.6 : 0.5;
+  const pctSocio = isLucro ? 0.4 : 0.5;
+  const lblDonoPct = isLucro ? '60%' : '50%';
+  const lblSocioPct = isLucro ? '40%' : '50%';
+  const splitLabel = isLucro ? '(lucro → 60/40)' : '(prejuízo → 50/50)';
+
+  let voce60 = lucro * pctDono;
+  let socio40 = lucro * pctSocio;
+  let voceFinal = voce60 - gv;
+  let socioFinal = socio40 - gs;
+
+  document.getElementById('rBruto').textContent = f(fatBruto);
+  document.getElementById('rGastos').textContent = f(gastosTotais);
+  document.getElementById('rPagarFunc').textContent = f(funcParaFunc);
+  document.getElementById('rReceita').textContent = f(receitaBarbearia);
+  document.getElementById('rLucro').textContent = f(lucro);
+  document.getElementById('rLucro').style.color = isLucro ? 'var(--green)' : 'var(--red)';
+  document.getElementById('rVoce').textContent = f(voceFinal);
+  document.getElementById('rSocio').textContent = f(socioFinal);
+  document.getElementById('lblVoce').textContent = '🧑 ' + cfg.dono + ' (' + lblDonoPct + ')';
+  document.getElementById('lblSocio').textContent = '👥 ' + cfg.socio + ' (' + lblSocioPct + ')';
+
+  // Linha de aviso de divisão
+  const splitWarn = document.getElementById('splitWarn');
+  if (splitWarn) {
+    splitWarn.textContent = isLucro ? '✅ Resultado positivo → divisão 60/40 (dono/sócio)' : '⚠️ Resultado negativo → divisão 50/50';
+    splitWarn.style.color = isLucro ? 'var(--green)' : 'var(--red)';
+  }
+
+  // Comissão média ponderada do período
+  const comissaoMedia = totalFunc > 0 ? (totalFuncParaFunc / totalFunc * 100).toFixed(0) : 50;
+  document.getElementById('ddFuncFunc').textContent = '− ' + f(funcParaFunc) + ' (' + comissaoMedia + '%)';
+  document.getElementById('ddFuncBarb').textContent = f(funcParaBarb) + ' (' + (100 - +comissaoMedia) + '%)';
+
+  document.getElementById('ddBarb').textContent = f(totalBarb);
+  document.getElementById('ddFuncBruto').textContent = f(totalFunc);
+  document.getElementById('ddReceita').textContent = f(receitaBarbearia);
+  document.getElementById('ddGastos').textContent = '− ' + f(ga);
+  document.getElementById('ddLucro').textContent = f(lucro);
+  document.getElementById('ddLucro').style.color = isLucro ? 'var(--green)' : 'var(--red)';
+  document.getElementById('ddVoceLbl').textContent = cfg.dono + ' (' + lblDonoPct + ' do lucro) ' + splitLabel;
+  document.getElementById('ddVoce').textContent = f(voce60);
+  document.getElementById('ddGVLbl').textContent = '− Gastos só ' + cfg.dono;
+  document.getElementById('ddGV').textContent = gv ? '− ' + f(gv) : '—';
+  document.getElementById('ddVoceFLbl').textContent = '= ' + cfg.dono + ' recebe';
+  document.getElementById('ddVoceFinal').textContent = f(voceFinal);
+  document.getElementById('ddSocioLbl').textContent = cfg.socio + ' (' + lblSocioPct + ' do lucro) ' + splitLabel;
+  document.getElementById('ddSocio').textContent = f(socio40);
+  document.getElementById('ddGSLbl').textContent = '− Gastos só ' + cfg.socio;
+  document.getElementById('ddGS').textContent = gs ? '− ' + f(gs) : '—';
+  document.getElementById('ddSocioFLbl').textContent = '= ' + cfg.socio + ' recebe';
+  document.getElementById('ddSocioFinal').textContent = f(socioFinal);
+
+  const rl = { ambos: 'Ambos', dono: cfg.dono, socio: cfg.socio };
+  if (dsel.length) {
+    document.getElementById('recDiasList').innerHTML = [...dsel].sort((a, b) => a.data.localeCompare(b.data)).map(d => {
+      const pct = Math.round((d.comissao !== undefined ? d.comissao : 0.5) * 100);
+      return '<div class="record-item"><span>' + fmtD(d.data) + '</span><span>Barb: ' + f(d.barbearia || 0) + ' | Func: ' + f(d.func || 0) + ' <span style="color:var(--blue);font-size:10px">(' + pct + '%)</span></span></div>';
+    }).join('');
+  } else {
+    document.getElementById('recDiasList').innerHTML = '<div class="empty">Nenhum dia no período</div>';
+  }
+
+  if (gsel.length) {
+    let byDate = {};
+    gsel.forEach(g => { if (!byDate[g.data]) byDate[g.data] = []; byDate[g.data].push(g); });
+    let dates = Object.keys(byDate).sort();
+    document.getElementById('recGastosList').innerHTML = dates.map(date => {
+      let items = byDate[date];
+      return '<div style="margin-bottom:6px"><div style="font-size:12px;font-weight:600">' + fmtD(date) + '</div>'
+        + items.map(g => '<div class="record-item"><span>' + g.descricao + ' (' + rl[g.resp] + ')</span><span style="color:var(--red)">' + f(g.valor) + '</span></div>').join('')
+        + '</div>';
+    }).join('');
+  } else {
+    document.getElementById('recGastosList').innerHTML = '<div class="empty">Nenhum gasto no período</div>';
+  }
+
+  document.getElementById('resultados').style.display = 'block';
+};
+
+// ---- Init ----
+document.getElementById('dData').value = todayStr();
+document.getElementById('gData').value = todayStr();
+setFbStatus('connecting');
+showLoading(true);
+initListeners();
+updatePeriod();
+</script>
+</body>
+</html>
