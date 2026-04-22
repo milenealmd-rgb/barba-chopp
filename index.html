@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -11,7 +12,8 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--primary);min-height:100vh}
 .container{max-width:480px;margin:auto;padding:16px}
 .header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.logo{width:48px;height:48px;background:var(--primary);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff}
+.logo{width:48px;height:48px;background:var(--primary);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover;border-radius:14px}
 .header h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 .header p{font-size:12px;color:var(--secondary)}
 .tabs{display:flex;gap:4px;background:#e5e7eb;border-radius:12px;padding:4px;margin-bottom:16px}
@@ -21,7 +23,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .card-title{font-size:11px;font-weight:600;color:var(--secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12px;font-weight:500;margin-bottom:4px;color:var(--secondary)}
-.field input,.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none;transition:border .2s}
+.field input,.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none;transition:border .2s;max-width:100%}
+.field input[type="date"]{-webkit-appearance:none;appearance:none}
 .field input:focus,.field select:focus{border-color:var(--blue)}
 .btn{width:100%;padding:12px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:6px}
 .btn:active{opacity:.85}
@@ -74,7 +77,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
 .config-badge{display:inline-flex;align-items:center;gap:4px;background:#f3f4f6;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--secondary);cursor:pointer}
 .config-badge:hover{background:#e5e7eb}
-/* Firebase status indicator */
 .fb-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--secondary);margin-left:6px}
 .fb-dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;display:inline-block;transition:background .3s}
 .fb-dot.connected{background:var(--green)}
@@ -83,24 +85,204 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .loading-overlay.show{display:flex}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── LOGIN SCREEN (LIGHT THEME) ── */
+#loginScreen{
+display:none;position:fixed;inset:0;z-index:500;
+background:linear-gradient(145deg,#f0f4ff 0%,#e8effe 50%,#f5f6f8 100%);
+align-items:center;justify-content:center;padding:20px;
+}
+#loginScreen.show{display:flex}
+.login-box{
+width:100%;max-width:380px;
+background:#ffffff;
+border:1px solid rgba(37,99,235,.12);
+border-radius:24px;padding:36px 28px;
+box-shadow:0 8px 48px rgba(37,99,235,.1),0 2px 8px rgba(0,0,0,.06);
+animation:loginIn .4s cubic-bezier(.22,1,.36,1);
+}
+@keyframes loginIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{
+width:64px;height:64px;border-radius:18px;
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+display:flex;align-items:center;justify-content:center;
+margin:0 auto 20px;overflow:hidden;
+box-shadow:0 8px 24px rgba(37,99,235,.3);
+}
+.login-logo img{width:100%;height:100%;object-fit:cover;border-radius:18px}
+.login-title{font-size:26px;font-weight:800;color:#111827;text-align:center;letter-spacing:-.5px;margin-bottom:4px}
+.login-sub{font-size:13px;color:#6b7280;text-align:center;margin-bottom:28px}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.login-field input{
+width:100%;padding:12px 14px;
+background:#f9fafb;
+border:1px solid #e5e7eb;
+border-radius:12px;font-size:14px;color:#111827;outline:none;
+transition:border .2s,background .2s;
+}
+.login-field input::placeholder{color:#9ca3af}
+.login-field input:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.login-btn{
+width:100%;padding:13px;margin-top:8px;
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+color:#fff;font-size:14px;font-weight:700;
+border:none;border-radius:12px;cursor:pointer;
+transition:opacity .2s,transform .1s;
+box-shadow:0 4px 16px rgba(37,99,235,.3);
+letter-spacing:.2px;
+}
+.login-btn:active{opacity:.85;transform:scale(.99)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-toggle{
+text-align:center;margin-top:18px;font-size:13px;color:#6b7280;
+}
+.login-toggle span{color:#2563eb;cursor:pointer;font-weight:600}
+.login-toggle span:hover{color:#1d4ed8}
+.login-err{
+border-radius:10px;padding:10px 12px;font-size:12px;
+margin-bottom:12px;text-align:center;display:none;
+}
+.login-err.show{display:block}
+.login-err.err-red{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);color:#dc2626}
+.login-err.err-green{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);color:#16a34a}
+.forgot-link{
+display:block;text-align:right;font-size:11px;color:#2563eb;
+cursor:pointer;margin-top:-6px;margin-bottom:14px;
+}
+.forgot-link:hover{color:#1d4ed8}
+.login-divider{
+display:flex;align-items:center;gap:10px;margin:18px 0;
+color:#d1d5db;font-size:11px;
+}
+.login-divider::before,.login-divider::after{
+content:’’;flex:1;height:1px;background:#e5e7eb;
+}
+
+/* user badge no header */
+.user-badge{
+display:inline-flex;align-items:center;gap:5px;
+background:#f3f4f6;border-radius:20px;
+padding:4px 10px 4px 6px;font-size:11px;font-weight:600;
+color:var(–secondary);cursor:pointer;max-width:120px;overflow:hidden;
+}
+.user-badge:hover{background:#e5e7eb}
+.user-avatar{
+width:22px;height:22px;border-radius:50%;
+background:var(–primary);color:#fff;
+display:flex;align-items:center;justify-content:center;
+font-size:10px;font-weight:700;flex-shrink:0;
+}
+.user-email{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* mini modal logout */
+.logout-modal{
+display:none;position:fixed;inset:0;z-index:300;
+background:rgba(0,0,0,.35);align-items:flex-end;justify-content:center;
+padding:0 0 20px;
+}
+.logout-modal.show{display:flex}
+.logout-sheet{
+background:#fff;border-radius:20px 20px 16px 16px;
+padding:20px;width:100%;max-width:480px;
+box-shadow:0 -8px 40px rgba(0,0,0,.15);
+animation:slideUp .25s cubic-bezier(.22,1,.36,1);
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.logout-sheet h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.logout-sheet p{font-size:12px;color:var(–secondary);margin-bottom:16px;word-break:break-all}
+.logout-sheet-btns{display:flex;gap:8px}
+
+/* Funcionário tag */
+.func-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(37,99,235,.08);border-radius:6px;padding:2px 6px;font-size:11px;color:var(–blue);font-weight:600}
+
+/* Filtro de período nos registros */
+.period-filter{background:#f9fafb;border-radius:10px;padding:12px;margin-bottom:12px}
+.period-filter-title{font-size:11px;font-weight:600;color:var(–secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+/* Funcionários config */
+.func-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px}
+.func-item:last-child{border:none}
+.func-item .name{font-weight:600}
+.func-item .pct{color:var(–blue);font-size:12px}
 </style>
+
 </head>
 <body>
 
-<!-- Loading overlay -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <div style="font-size:13px;color:var(--secondary)">Carregando dados...</div>
 </div>
 
+<!-- ════════════ LOGIN (LIGHT) ════════════ -->
+
+<div id="loginScreen" class="show">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="IMG_9394.png" alt="Barba&Chopp" onerror="this.parentElement.style.fontSize='30px';this.parentElement.innerHTML='✂️'">
+    </div>
+    <div class="login-title">Barba&Chopp</div>
+    <div class="login-sub">Acesso restrito à equipe</div>
+
+
+<div class="login-err" id="loginErr"></div>
+
+<!-- LOGIN -->
+<div id="formLogin">
+  <div class="login-field"><label>E-mail</label><input type="email" id="lEmail" placeholder="seu@email.com" autocomplete="email"></div>
+  <div class="login-field"><label>Senha</label><input type="password" id="lSenha" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+  <span class="forgot-link" onclick="doForgot()">Esqueci minha senha</span>
+  <button class="login-btn" id="loginBtn" onclick="doLogin()">Entrar</button>
+  <div class="login-divider">ou</div>
+  <div class="login-toggle">Não tem conta? <span onclick="toggleForm('register')">Criar conta</span></div>
+</div>
+
+<!-- REGISTER -->
+<div id="formRegister" style="display:none">
+  <div class="login-field"><label>E-mail</label><input type="email" id="rEmail" placeholder="seu@email.com" autocomplete="email"></div>
+  <div class="login-field"><label>Senha (mínimo 6 caracteres)</label><input type="password" id="rSenha" placeholder="••••••••" autocomplete="new-password"></div>
+  <div class="login-field"><label>Confirmar senha</label><input type="password" id="rSenha2" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()"></div>
+  <button class="login-btn" id="registerBtn" onclick="doRegister()">Criar conta</button>
+  <div class="login-divider">ou</div>
+  <div class="login-toggle">Já tem conta? <span onclick="toggleForm('login')">Entrar</span></div>
+</div>
+
+<!-- FORGOT -->
+<div id="formForgot" style="display:none">
+  <div style="text-align:center;margin-bottom:16px">
+    <div style="font-size:32px;margin-bottom:8px">🔑</div>
+    <div style="font-size:13px;color:#6b7280">Digite seu e-mail e enviaremos um link para redefinir sua senha.</div>
+  </div>
+  <div class="login-field"><label>E-mail</label><input type="email" id="fEmail" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doForgotSend()"></div>
+  <button class="login-btn" onclick="doForgotSend()">Enviar link de redefinição</button>
+  <div class="login-divider">ou</div>
+  <div class="login-toggle"><span onclick="toggleForm('login')">← Voltar ao login</span></div>
+</div>
+
+
+  </div>
+</div>
+
+<!-- ════════════ APP ════════════ -->
+
+<div id="app" style="display:none">
 <div class="container">
   <div class="header">
-    <div class="logo">✂️</div>
+    <div class="logo">
+      <img src="IMG_9394.png" alt="logo" onerror="this.parentElement.style.fontSize='24px';this.parentElement.style.color='#fff';this.parentElement.innerHTML='✂️'">
+    </div>
     <div style="flex:1">
       <h1>Barba&Chopp</h1>
       <p>Gestão da Barbearia <span class="fb-status"><span class="fb-dot" id="fbDot"></span><span id="fbStatusText">conectando...</span></span></p>
     </div>
-    <div class="config-badge" onclick="openConfig()">⚙️ <span id="configNames">Dono / Sócio</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+      <div class="config-badge" onclick="openConfig()">⚙️ <span id="configNames">Dono / Sócio</span></div>
+      <div class="user-badge" onclick="openLogout()" id="userBadge">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-email" id="userEmailDisplay">...</span>
+      </div>
+    </div>
   </div>
 
   <div class="tabs">
@@ -110,28 +292,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div class="tab" onclick="showTab('config',this)">⚙️</div>
   </div>
 
-  <!-- DIA -->
+  <!-- ── DIA ── -->
+
   <div id="dia" class="panel active">
     <div class="card">
       <div class="card-title">📅 Registro diário</div>
       <div class="field"><label>Data</label><input type="date" id="dData"></div>
       <div class="field"><label>Faturamento Barbearia (R$)</label><input type="number" id="dBarb" placeholder="0,00" step="0.01"></div>
-      <div class="field"><label>Faturamento Funcionário (R$)</label><input type="number" id="dFunc" placeholder="0,00" step="0.01"></div>
-      <div class="field">
-        <label>Comissão do Funcionário: <strong id="dComissaoLabel">50%</strong></label>
-        <input type="range" id="dComissao" min="0" max="100" value="50" step="1" style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px" oninput="document.getElementById('dComissaoLabel').textContent=this.value+'%'">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
-      </div>
-      <button class="btn" onclick="addDia()">💰 Salvar dia</button>
-      <p style="font-size:11px;color:var(--secondary);margin-top:8px;text-align:center">* Se já existir registro nessa data, os valores serão somados</p>
-    </div>
-    <div class="card">
-      <div class="card-title">Dias cadastrados (<span id="diasCount">0</span>)</div>
-      <div id="listaDias"></div>
-    </div>
+
+
+  <!-- Entradas por funcionário -->
+  <div style="margin-bottom:12px">
+    <div style="font-size:12px;font-weight:500;color:var(--secondary);margin-bottom:8px">Faturamento por Funcionário</div>
+    <div id="funcEntradas"></div>
+    <button class="btn btn-outline" style="margin-top:6px;font-size:12px;padding:8px" onclick="addFuncEntrada()">+ Adicionar funcionário</button>
   </div>
 
-  <!-- GASTOS -->
+  <button class="btn" onclick="addDia()">💰 Salvar dia</button>
+  <p style="font-size:11px;color:var(--secondary);margin-top:8px;text-align:center">* Se já existir registro nessa data, os valores serão somados</p>
+</div>
+<div class="card">
+  <div class="card-title">Dias cadastrados (<span id="diasCount">0</span>)</div>
+  <!-- Filtro mês -->
+  <div class="period-filter">
+    <div class="period-filter-title">📆 Período exibido</div>
+    <div class="filter-row" style="margin-bottom:8px">
+      <div class="filter-btn active" onclick="setDiasMode('mes',this)" id="diasFiltroMes">Mês atual</div>
+      <div class="filter-btn" onclick="setDiasMode('custom',this)" id="diasFiltroCustom">Personalizado</div>
+    </div>
+    <div id="diasCustomRange" style="display:none;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field" style="margin:0"><label>De</label><input type="date" id="diasFiltroIni" onchange="renderDias()"></div>
+      <div class="field" style="margin:0"><label>Até</label><input type="date" id="diasFiltroFim" onchange="renderDias()"></div>
+    </div>
+  </div>
+  <div id="listaDias"></div>
+</div>
+
+
+  </div>
+
+  <!-- ── GASTOS ── -->
+
   <div id="gastos" class="panel">
     <div class="card">
       <div class="card-title">🧾 Registrar gasto</div>
@@ -145,11 +346,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
     <div class="card">
       <div class="card-title">Gastos registrados (<span id="gastosCount">0</span>)</div>
+      <!-- Filtro mês -->
+      <div class="period-filter">
+        <div class="period-filter-title">📆 Período exibido</div>
+        <div class="filter-row" style="margin-bottom:8px">
+          <div class="filter-btn active" onclick="setGastosMode('mes',this)">Mês atual</div>
+          <div class="filter-btn" onclick="setGastosMode('custom',this)">Personalizado</div>
+        </div>
+        <div id="gastosCustomRange" style="display:none;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="field" style="margin:0"><label>De</label><input type="date" id="gastosFiltroIni" onchange="renderGastos()"></div>
+          <div class="field" style="margin:0"><label>Até</label><input type="date" id="gastosFiltroFim" onchange="renderGastos()"></div>
+        </div>
+      </div>
       <div id="listaGastos"></div>
     </div>
   </div>
 
-  <!-- FECHAMENTO -->
+  <!-- ── FECHAMENTO ── -->
+
   <div id="fechamento" class="panel">
     <div class="card">
       <div class="card-title">📊 Fechamento</div>
@@ -176,48 +390,77 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="results">
         <div class="result-card rc-green"><div class="label">Faturamento Bruto</div><div class="value" id="rBruto"></div></div>
         <div class="result-card rc-red"><div class="label">Gastos Totais</div><div class="value" id="rGastos"></div></div>
-        <div class="result-card rc-orange"><div class="label">Pagar Funcionário</div><div class="value" id="rPagarFunc"></div></div>
+        <div class="result-card rc-orange"><div class="label">Pagar Funcionários</div><div class="value" id="rPagarFunc"></div></div>
         <div class="result-card rc-green"><div class="label">Receita Barbearia</div><div class="value" id="rReceita"></div></div>
         <div class="result-card rc-blue rc-full"><div class="label">Lucro (Receita − Gastos)</div><div class="value" id="rLucro"></div></div>
         <div class="result-card rc-green"><div class="label" id="lblVoce">🧑 Dono (60%)</div><div class="value" id="rVoce"></div></div>
         <div class="result-card rc-blue"><div class="label" id="lblSocio">👥 Sócio (40%)</div><div class="value" id="rSocio"></div></div>
       </div>
 
-      <div class="card" style="margin-top:12px">
-        <div class="card-title">📋 Detalhamento</div>
-        <div class="detail-row"><span class="lbl">Faturamento Barbearia</span><span class="val" id="ddBarb"></span></div>
-        <div class="detail-row"><span class="lbl">Faturamento Func (bruto)</span><span class="val" id="ddFuncBruto"></span></div>
-        <div class="detail-row"><span class="lbl">→ Funcionário (comissão)</span><span class="val orange" id="ddFuncFunc"></span></div>
-        <div class="detail-row"><span class="lbl">→ Barbearia (restante)</span><span class="val green" id="ddFuncBarb"></span></div>
-        <div class="divider"></div>
-        <div class="detail-row"><span class="lbl">= Receita barbearia (barb + parte func)</span><span class="val green" id="ddReceita"></span></div>
-        <div class="detail-row"><span class="lbl">− Gastos compartilhados</span><span class="val red" id="ddGastos"></span></div>
-        <div class="detail-row total"><span class="lbl">= Lucro</span><span class="val green" id="ddLucro"></span></div>
-        <div class="divider"></div>
-        <div class="detail-row"><span class="lbl" id="ddVoceLbl">Dono (60% do lucro)</span><span class="val blue" id="ddVoce"></span></div>
-        <div class="detail-row"><span class="lbl" id="ddGVLbl">− Gastos só do dono</span><span class="val red" id="ddGV"></span></div>
-        <div class="detail-row total"><span class="lbl" id="ddVoceFLbl">= Dono recebe</span><span class="val green" id="ddVoceFinal"></span></div>
-        <div class="divider"></div>
-        <div class="detail-row"><span class="lbl" id="ddSocioLbl">Sócio (40% do lucro)</span><span class="val blue" id="ddSocio"></span></div>
-        <div class="detail-row"><span class="lbl" id="ddGSLbl">− Gastos só do sócio</span><span class="val red" id="ddGS"></span></div>
-        <div class="detail-row total"><span class="lbl" id="ddSocioFLbl">= Sócio recebe</span><span class="val green" id="ddSocioFinal"></span></div>
-      </div>
 
-      <div class="card">
-        <div class="card-title">📑 Registros do período</div>
-        <div class="section-card"><div class="section-card-title">📅 Faturamento por dia</div><div id="recDiasList"></div></div>
-        <div class="section-card"><div class="section-card-title">🧾 Gastos por dia</div><div id="recGastosList"></div></div>
-      </div>
-    </div>
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">📋 Detalhamento</div>
+    <div class="detail-row"><span class="lbl">Faturamento Barbearia</span><span class="val" id="ddBarb"></span></div>
+    <div class="detail-row"><span class="lbl">Faturamento Func (bruto total)</span><span class="val" id="ddFuncBruto"></span></div>
+    <div class="detail-row"><span class="lbl">→ Total pago funcionários</span><span class="val orange" id="ddFuncFunc"></span></div>
+    <div class="detail-row"><span class="lbl">→ Barbearia (restante)</span><span class="val green" id="ddFuncBarb"></span></div>
+
+    <!-- Detalhamento por funcionário -->
+    <div id="ddFuncDetalhe" style="margin:4px 0 4px 12px"></div>
+
+    <div class="divider"></div>
+    <div class="detail-row"><span class="lbl">= Receita barbearia (barb + parte func)</span><span class="val green" id="ddReceita"></span></div>
+    <div class="detail-row"><span class="lbl">− Gastos compartilhados</span><span class="val red" id="ddGastos"></span></div>
+    <div class="detail-row total"><span class="lbl">= Lucro</span><span class="val green" id="ddLucro"></span></div>
+    <div class="divider"></div>
+    <div class="detail-row"><span class="lbl" id="ddVoceLbl">Dono (60% do lucro)</span><span class="val blue" id="ddVoce"></span></div>
+    <div class="detail-row"><span class="lbl" id="ddGVLbl">− Gastos só do dono</span><span class="val red" id="ddGV"></span></div>
+    <div class="detail-row total"><span class="lbl" id="ddVoceFLbl">= Dono recebe</span><span class="val green" id="ddVoceFinal"></span></div>
+    <div class="divider"></div>
+    <div class="detail-row"><span class="lbl" id="ddSocioLbl">Sócio (40% do lucro)</span><span class="val blue" id="ddSocio"></span></div>
+    <div class="detail-row"><span class="lbl" id="ddGSLbl">− Gastos só do sócio</span><span class="val red" id="ddGS"></span></div>
+    <div class="detail-row total"><span class="lbl" id="ddSocioFLbl">= Sócio recebe</span><span class="val green" id="ddSocioFinal"></span></div>
   </div>
 
-  <!-- CONFIG -->
+  <div class="card">
+    <div class="card-title">📑 Registros do período</div>
+    <div class="section-card"><div class="section-card-title">📅 Faturamento por dia</div><div id="recDiasList"></div></div>
+    <div class="section-card"><div class="section-card-title">🧾 Gastos por dia</div><div id="recGastosList"></div></div>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- ── CONFIG ── -->
+
   <div id="config" class="panel">
     <div class="card">
       <div class="card-title">⚙️ Configurações</div>
       <div class="field"><label>Nome do Dono</label><input type="text" id="cfgDono" placeholder="Ex: João"></div>
       <div class="field"><label>Nome do Sócio</label><input type="text" id="cfgSocio" placeholder="Ex: Pedro"></div>
       <button class="btn btn-green" onclick="saveConfig()">✅ Salvar nomes</button>
+    </div>
+    <div class="card">
+      <div class="card-title">👥 Funcionários</div>
+      <div id="funcList"></div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--secondary);margin-bottom:8px">Adicionar funcionário</div>
+        <div class="field"><label>Nome</label><input type="text" id="novoFuncNome" placeholder="Nome do funcionário"></div>
+        <div class="field">
+          <label>Comissão padrão: <strong id="novoFuncPctLabel">50%</strong></label>
+          <input type="range" id="novoFuncPct" min="0" max="100" value="50" step="1"
+            style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px"
+            oninput="document.getElementById('novoFuncPctLabel').textContent=this.value+'%'">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
+        </div>
+        <button class="btn btn-green" onclick="addFuncionario()">+ Adicionar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">👤 Minha conta</div>
+      <div id="myAccountInfo" style="font-size:13px;color:var(--secondary);padding:4px 0 12px"></div>
+      <button class="btn btn-outline" style="color:var(--red);border-color:var(--red)" onclick="openLogout()">🚪 Sair da conta</button>
     </div>
     <div class="card">
       <div class="card-title">🔥 Status Firebase</div>
@@ -228,29 +471,51 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
   </div>
 </div>
+</div>
 
-<!-- Modal edição -->
+<!-- Modal edição dia -->
+
 <div class="modal-overlay" id="editModal">
   <div class="modal">
     <h3 id="editTitle">Editar dia</h3>
     <div class="field"><label>Faturamento Barbearia (R$)</label><input type="number" id="editBarb" step="0.01"></div>
-    <div class="field"><label>Faturamento Funcionário (R$)</label><input type="number" id="editFunc" step="0.01"></div>
-    <div class="field">
-      <label>Comissão do Funcionário: <strong id="editComissaoLabel">50%</strong></label>
-      <input type="range" id="editComissao" min="0" max="100" value="50" step="1" style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px" oninput="document.getElementById('editComissaoLabel').textContent=this.value+'%'">
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="btn btn-green" style="flex:1" onclick="saveEdit()">Salvar</button>
-      <button class="btn btn-outline" style="flex:1" onclick="closeEdit()">Cancelar</button>
+
+
+<div style="font-size:12px;font-weight:600;color:var(--secondary);margin-bottom:8px">Faturamento por Funcionário</div>
+<div id="editFuncEntradas"></div>
+<button class="btn btn-outline" style="margin-bottom:12px;font-size:12px;padding:8px" onclick="addEditFuncEntrada()">+ Adicionar funcionário</button>
+
+<div style="display:flex;gap:8px;margin-top:8px">
+  <button class="btn btn-green" style="flex:1" onclick="saveEdit()">Salvar</button>
+  <button class="btn btn-outline" style="flex:1" onclick="closeEdit()">Cancelar</button>
+</div>
+
+
+  </div>
+</div>
+
+<!-- Logout sheet -->
+
+<div class="logout-modal" id="logoutModal" onclick="closeLogout()">
+  <div class="logout-sheet" onclick="event.stopPropagation()">
+    <h4>Sair da conta</h4>
+    <p id="logoutEmail" style="font-size:12px;color:var(--secondary);margin-bottom:16px"></p>
+    <div class="logout-sheet-btns">
+      <button class="btn btn-outline" style="flex:1" onclick="closeLogout()">Cancelar</button>
+      <button class="btn" style="flex:1;background:var(--red)" onclick="doLogout()">🚪 Sair</button>
     </div>
   </div>
 </div>
 
 <!-- Firebase SDK -->
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, get, remove, onValue, push, child, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, set, get, remove, onValue, push, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import {
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, onAuthStateChanged, sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAV1D-D2tN_-Z52hZBvSq_81J2qPEKWzLQ",
@@ -265,426 +530,704 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
-// ---- State ----
-let dias = [];
-let gastos = [];
-let cfg = { dono: "Dono", socio: "Sócio" };
+// ── State ──
+let dias = [], gastos = [], funcionarios = [];
+let cfg = { dono:"Dono", socio:"Sócio" };
 let mode = 'semana', navOffset = 0, editKey = null;
+let currentUser = null, dbListenersInit = false;
+let diasFilterMode = 'mes', gastosFilterMode = 'mes';
 
-// ---- Helpers ----
+// ── Helpers ──
 const f = v => 'R$ ' + v.toFixed(2).replace('.', ',');
-const fmtD = d => { const [y, m, day] = d.split('-'); return day + '/' + m + '/' + y; };
-const todayStr = () => new Date().toISOString().split('T')[0];
+const fmtD = d => { const [y,m,day] = d.split('-'); return day+'/'+m+'/'+y; };
 
-function setFbStatus(state) {
-  const dot1 = document.getElementById('fbDot');
-  const dot2 = document.getElementById('fbDot2');
-  const txt1 = document.getElementById('fbStatusText');
-  const txt2 = document.getElementById('fbStatusText2');
-  const map = {
-    connecting: { cls: '', text: 'conectando...' },
-    connected: { cls: 'connected', text: 'Firebase conectado ✓' },
-    error: { cls: 'error', text: 'Erro de conexão' }
-  };
-  const s = map[state] || map.connecting;
-  [dot1, dot2].forEach(d => { if (d) { d.className = 'fb-dot'; if (s.cls) d.classList.add(s.cls); } });
-  if (txt1) txt1.textContent = state === 'connected' ? '✓ online' : state === 'error' ? '✗ offline' : 'conectando...';
-  if (txt2) txt2.textContent = s.text;
+// Data local correta (sem bug de fuso horário)
+function todayStr(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return ${y}-${m}-${day};
+}
+function currentMonthRange(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const lastDay = new Date(y, d.getMonth()+1, 0).getDate();
+  return { ini:${y}-${m}-01, fim:${y}-${m}-${String(lastDay).padStart(2,'0')} };
 }
 
-function showLoading(v) {
-  document.getElementById('loadingOverlay').classList.toggle('show', v);
+// ── Auth error messages (PT-BR) ──
+const authMsg = {
+  'auth/user-not-found':'E-mail não cadastrado.',
+  'auth/wrong-password':'Senha incorreta.',
+  'auth/invalid-credential':'E-mail ou senha inválidos.',
+  'auth/email-already-in-use':'Este e-mail já está cadastrado.',
+  'auth/weak-password':'Senha fraca. Use pelo menos 6 caracteres.',
+  'auth/invalid-email':'E-mail inválido.',
+  'auth/too-many-requests':'Muitas tentativas. Tente novamente mais tarde.',
+  'auth/network-request-failed':'Sem conexão com a internet.',
+};
+function authError(code){ return authMsg[code] || 'Erro: ' + code; }
+
+window.toggleForm = function(which){
+  document.getElementById('formLogin').style.display    = which==='login'    ? 'block' : 'none';
+  document.getElementById('formRegister').style.display = which==='register' ? 'block' : 'none';
+  document.getElementById('formForgot').style.display   = which==='forgot'   ? 'block' : 'none';
+  showLoginErr('','red');
+};
+
+function showLoginErr(msg, type='red'){
+  const el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.className = 'login-err' + (msg ? (' show err-'+type) : '');
 }
 
-// ---- Firebase listeners (realtime) ----
-function initListeners() {
-  // Dias
-  onValue(ref(db, 'dias'), snap => {
-    dias = [];
-    if (snap.exists()) {
-      snap.forEach(child => {
-        dias.push({ _key: child.key, ...child.val() });
-      });
-    }
-    renderDias();
-    setFbStatus('connected');
-    showLoading(false);
-  }, err => {
-    console.error('dias error', err);
-    setFbStatus('error');
-    showLoading(false);
-  });
-
-  // Gastos
-  onValue(ref(db, 'gastos'), snap => {
-    gastos = [];
-    if (snap.exists()) {
-      snap.forEach(child => {
-        gastos.push({ _key: child.key, ...child.val() });
-      });
-    }
-    renderGastos();
-    renderDias(); // refresh days to show gastos
-  });
-
-  // Config
-  onValue(ref(db, 'cfg'), snap => {
-    if (snap.exists()) {
-      cfg = snap.val();
-    }
-    applyConfig();
-  });
+function setBtnLoading(id, loading){
+  const btn = document.getElementById(id);
+  if(!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Aguarde...' : (id==='loginBtn' ? 'Entrar' : id==='registerBtn' ? 'Criar conta' : 'Enviar link');
 }
 
-// ---- Config ----
-function applyConfig() {
-  document.getElementById('configNames').textContent = cfg.dono + ' / ' + cfg.socio;
-  document.getElementById('cfgDono').value = cfg.dono;
-  document.getElementById('cfgSocio').value = cfg.socio;
-  document.getElementById('optDono').textContent = 'Só ' + cfg.dono;
-  document.getElementById('optSocio').textContent = 'Só ' + cfg.socio;
-}
+window.doLogin = async function(){
+  const email = document.getElementById('lEmail').value.trim();
+  const senha = document.getElementById('lSenha').value;
+  if(!email || !senha){ showLoginErr('Preencha e-mail e senha.'); return; }
+  setBtnLoading('loginBtn', true);
+  showLoginErr('');
+  try { await signInWithEmailAndPassword(auth, email, senha); }
+  catch(e){ showLoginErr(authError(e.code)); setBtnLoading('loginBtn', false); }
+};
 
-window.saveConfig = async function () {
-  cfg.dono = document.getElementById('cfgDono').value || 'Dono';
-  cfg.socio = document.getElementById('cfgSocio').value || 'Sócio';
+window.doRegister = async function(){
+  const email  = document.getElementById('rEmail').value.trim();
+  const senha  = document.getElementById('rSenha').value;
+  const senha2 = document.getElementById('rSenha2').value;
+  if(!email || !senha){ showLoginErr('Preencha todos os campos.'); return; }
+  if(senha !== senha2){ showLoginErr('As senhas não coincidem.'); return; }
+  if(senha.length < 6){ showLoginErr('A senha precisa ter pelo menos 6 caracteres.'); return; }
+  setBtnLoading('registerBtn', true);
+  showLoginErr('');
+  try { await createUserWithEmailAndPassword(auth, email, senha); }
+  catch(e){ showLoginErr(authError(e.code)); setBtnLoading('registerBtn', false); }
+};
+
+window.doForgot = function(){ toggleForm('forgot'); };
+window.doForgotSend = async function(){
+  const email = document.getElementById('fEmail').value.trim();
+  if(!email){ showLoginErr('Digite seu e-mail.'); return; }
+  showLoginErr('');
   try {
-    await set(ref(db, 'cfg'), cfg);
-    applyConfig();
-    showTab('dia', document.querySelectorAll('.tab')[0]);
-  } catch (e) {
-    alert('Erro ao salvar configuração: ' + e.message);
+    await sendPasswordResetEmail(auth, email);
+    showLoginErr('✅ Link enviado! Verifique seu e-mail.', 'green');
+  } catch(e){ showLoginErr(authError(e.code)); }
+};
+
+// ── Auth state ──
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  if(user){
+    document.getElementById('loginScreen').classList.remove('show');
+    document.getElementById('app').style.display = 'block';
+    const initial = user.email[0].toUpperCase();
+    document.getElementById('userAvatar').textContent = initial;
+    document.getElementById('userEmailDisplay').textContent = user.email;
+    document.getElementById('logoutEmail').textContent = '📧 ' + user.email;
+    document.getElementById('myAccountInfo').innerHTML =
+      '📧 <strong>'+user.email+'</strong><br><span style="font-size:11px">UID: '+user.uid+'</span>';
+    if(!dbListenersInit){ dbListenersInit = true; initListeners(); }
+  } else {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('loginScreen').classList.add('show');
+    document.getElementById('loadingOverlay').classList.remove('show');
+    setBtnLoading('loginBtn', false);
+    setBtnLoading('registerBtn', false);
+    dias = []; gastos = []; funcionarios = [];
+    dbListenersInit = false;
   }
+});
+
+window.openLogout  = () => document.getElementById('logoutModal').classList.add('show');
+window.closeLogout = () => document.getElementById('logoutModal').classList.remove('show');
+window.doLogout = async function(){
+  try{ await signOut(auth); } catch(e){ alert('Erro ao sair: '+e.message); }
+  closeLogout();
 };
 
-window.openConfig = function () { showTab('config', document.querySelectorAll('.tab')[3]); };
+// ── Firebase status ──
+function setFbStatus(state){
+  const dot1=document.getElementById('fbDot'), dot2=document.getElementById('fbDot2');
+  const txt1=document.getElementById('fbStatusText'), txt2=document.getElementById('fbStatusText2');
+  const map={connecting:{cls:'',text:'conectando...'},connected:{cls:'connected',text:'Firebase conectado ✓'},error:{cls:'error',text:'Erro de conexão'}};
+  const s=map[state]||map.connecting;
+  [dot1,dot2].forEach(d=>{ if(d){ d.className='fb-dot'; if(s.cls) d.classList.add(s.cls); } });
+  if(txt1) txt1.textContent = state==='connected'?'✓ online':state==='error'?'✗ offline':'conectando...';
+  if(txt2) txt2.textContent = s.text;
+}
+function showLoading(v){ document.getElementById('loadingOverlay').classList.toggle('show', v); }
 
-window.showTab = function (id, el) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+// ── Firebase listeners ──
+function initListeners(){
+  showLoading(true);
+  onValue(ref(db,'dias'), snap=>{
+    dias=[];
+    if(snap.exists()) snap.forEach(c=>{ dias.push({_key:c.key,...c.val()}); });
+    renderDias(); setFbStatus('connected'); showLoading(false);
+  }, err=>{ console.error(err); setFbStatus('error'); showLoading(false); });
+
+  onValue(ref(db,'gastos'), snap=>{
+    gastos=[];
+    if(snap.exists()) snap.forEach(c=>{ gastos.push({_key:c.key,...c.val()}); });
+    renderGastos(); renderDias();
+  });
+
+  onValue(ref(db,'funcionarios'), snap=>{
+    funcionarios=[];
+    if(snap.exists()) snap.forEach(c=>{ funcionarios.push({_key:c.key,...c.val()}); });
+    renderFuncConfig();
+    renderFuncEntradas();
+  });
+
+  onValue(ref(db,'cfg'), snap=>{
+    if(snap.exists()) cfg=snap.val();
+    applyConfig();
+  });
+}
+
+// ── Config ──
+function applyConfig(){
+  document.getElementById('configNames').textContent = cfg.dono+' / '+cfg.socio;
+  document.getElementById('cfgDono').value  = cfg.dono;
+  document.getElementById('cfgSocio').value = cfg.socio;
+  document.getElementById('optDono').textContent  = 'Só '+cfg.dono;
+  document.getElementById('optSocio').textContent = 'Só '+cfg.socio;
+}
+window.saveConfig = async function(){
+  cfg.dono  = document.getElementById('cfgDono').value  || 'Dono';
+  cfg.socio = document.getElementById('cfgSocio').value || 'Sócio';
+  try { await set(ref(db,'cfg'), cfg); applyConfig(); showTab('dia', document.querySelectorAll('.tab')[0]); }
+  catch(e){ alert('Erro ao salvar configuração: '+e.message); }
+};
+window.openConfig = () => showTab('config', document.querySelectorAll('.tab')[3]);
+
+window.showTab = function(id, el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  if (id === 'fechamento') { navOffset = 0; updatePeriod(); }
+  if(id==='fechamento'){ navOffset=0; updatePeriod(); }
 };
 
-// ---- DIA ----
-window.addDia = async function () {
-  const data = document.getElementById('dData').value;
-  const barb = +(document.getElementById('dBarb').value) || 0;
-  const func = +(document.getElementById('dFunc').value) || 0;
-  const comissao = +(document.getElementById('dComissao').value) / 100;
-  if (!data) return;
-
+// ── FUNCIONÁRIOS ──
+window.addFuncionario = async function(){
+  const nome = document.getElementById('novoFuncNome').value.trim();
+  const pct  = +(document.getElementById('novoFuncPct').value)/100;
+  if(!nome) return alert('Digite o nome do funcionário.');
   try {
-    const existing = dias.find(d => d.data === data);
-    if (existing) {
-      // Para soma de dias, recalcula comissão como média ponderada
-      const prevFunc = existing.func || 0;
-      const prevComissao = existing.comissao !== undefined ? existing.comissao : 0.5;
-      const totalFunc = prevFunc + func;
-      const newComissao = totalFunc > 0 ? ((prevFunc * prevComissao) + (func * comissao)) / totalFunc : comissao;
-      await update(ref(db, 'dias/' + existing._key), {
-        barbearia: (existing.barbearia || 0) + barb,
-        func: totalFunc,
-        comissao: newComissao
+    await push(ref(db,'funcionarios'), { nome, comissao: pct });
+    document.getElementById('novoFuncNome').value = '';
+    document.getElementById('novoFuncPct').value = 50;
+    document.getElementById('novoFuncPctLabel').textContent = '50%';
+  } catch(e){ alert('Erro: '+e.message); }
+};
+
+window.removeFuncionario = async function(key){
+  if(!confirm('Remover funcionário?')) return;
+  try{ await remove(ref(db,'funcionarios/'+key)); } catch(e){ alert('Erro: '+e.message); }
+};
+
+function renderFuncConfig(){
+  const el = document.getElementById('funcList');
+  if(!funcionarios.length){ el.innerHTML='<div class="empty">Nenhum funcionário cadastrado</div>'; return; }
+  el.innerHTML = funcionarios.map(fn=>`
+    <div class="func-item">
+      <div>
+        <div class="name">${fn.nome}</div>
+        <div class="pct">Comissão padrão: ${Math.round((fn.comissao||0.5)*100)}%</div>
+      </div>
+      <button class="btn-red" onclick="removeFuncionario('${fn._key}')">🗑️</button>
+    </div>
+  `).join('');
+}
+
+// ── Entradas de funcionários no formulário de DIA ──
+let funcEntradasCount = 0;
+function renderFuncEntradas(){
+  const container = document.getElementById('funcEntradas');
+  if(!container) return;
+  // Preserva entradas existentes, só atualiza selects
+  const existing = container.querySelectorAll('.func-entrada');
+  if(existing.length === 0){
+    // Adiciona uma entrada padrão se há funcionários
+    if(funcionarios.length > 0) addFuncEntrada();
+  }
+}
+
+window.addFuncEntrada = function(){
+  const container = document.getElementById('funcEntradas');
+  const id = ++funcEntradasCount;
+  const opts = funcionarios.map(fn=><option value="${fn._key}" data-comissao="${fn.comissao||0.5}">${fn.nome}</option>).join('') ||
+    '<option value="">Nenhum funcionário cadastrado</option>';
+  const div = document.createElement('div');
+  div.className = 'func-entrada';
+  div.id = 'fe_'+id;
+  div.style.cssText = 'background:#f9fafb;border-radius:10px;padding:10px;margin-bottom:8px;position:relative';
+  div.innerHTML = `
+    <button onclick="removeFuncEntrada('fe_${id}')" style="position:absolute;top:8px;right:8px;background:none;border:none;font-size:16px;cursor:pointer;color:var(--secondary)">✕</button>
+    <div class="field" style="margin-bottom:8px"><label>Funcionário</label>
+      <select id="feFunc_${id}" onchange="autoFillComissao(${id})" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px">${opts}</select>
+    </div>
+    <div class="field" style="margin-bottom:8px"><label>Faturamento (R$)</label>
+      <input type="number" id="feValor_${id}" placeholder="0,00" step="0.01" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px">
+    </div>
+    <div class="field" style="margin-bottom:0">
+      <label>Comissão: <strong id="fePctLabel_${id}">50%</strong></label>
+      <input type="range" id="fePct_${id}" min="0" max="100" value="50" step="1"
+        style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px"
+        oninput="document.getElementById('fePctLabel_${id}').textContent=this.value+'%'">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
+    </div>
+  `;
+  container.appendChild(div);
+  // Auto-preenche comissão padrão do funcionário selecionado
+  setTimeout(()=>autoFillComissao(id), 50);
+};
+
+window.autoFillComissao = function(id){
+  const sel = document.getElementById('feFunc_'+id);
+  if(!sel) return;
+  const opt = sel.options[sel.selectedIndex];
+  const com = +(opt.getAttribute('data-comissao')||0.5);
+  const pct = Math.round(com*100);
+  const rng = document.getElementById('fePct_'+id);
+  const lbl = document.getElementById('fePctLabel_'+id);
+  if(rng) rng.value = pct;
+  if(lbl) lbl.textContent = pct+'%';
+};
+
+window.removeFuncEntrada = function(id){
+  const el = document.getElementById(id);
+  if(el) el.remove();
+};
+
+function getFuncEntradas(){
+  const entradas = [];
+  document.querySelectorAll('.func-entrada').forEach(div=>{
+    const idMatch = div.id.match(/fe_(\d+)/);
+    if(!idMatch) return;
+    const i = idMatch[1];
+    const funcKey = document.getElementById('feFunc_'+i)?.value;
+    const valor   = +(document.getElementById('feValor_'+i)?.value)||0;
+    const pct     = +(document.getElementById('fePct_'+i)?.value||50)/100;
+    const fn = funcionarios.find(x=>x._key===funcKey);
+    if(fn && valor > 0) entradas.push({ funcKey, nome: fn.nome, valor, comissao: pct });
+  });
+  return entradas;
+}
+
+// ── DIA ──
+window.addDia = async function(){
+  const data = document.getElementById('dData').value;
+  const barb = +(document.getElementById('dBarb').value)||0;
+  if(!data) return;
+  const entradas = getFuncEntradas();
+  try {
+    const existing = dias.find(d=>d.data===data);
+    if(existing){
+      // Merge: somar barbearia, merge funcionários
+      const newBarb = (existing.barbearia||0) + barb;
+      const prevFuncs = existing.funcs || {};
+      const mergedFuncs = {...prevFuncs};
+      entradas.forEach(e=>{
+        if(mergedFuncs[e.funcKey]){
+          const prev = mergedFuncs[e.funcKey];
+          const totalVal = (prev.valor||0) + e.valor;
+          const mergedCom = totalVal > 0
+            ? ((prev.valor||0)*(prev.comissao||0.5) + e.valor*e.comissao) / totalVal
+            : e.comissao;
+          mergedFuncs[e.funcKey] = { nome:e.nome, valor:totalVal, comissao:mergedCom };
+        } else {
+          mergedFuncs[e.funcKey] = { nome:e.nome, valor:e.valor, comissao:e.comissao };
+        }
       });
+      await update(ref(db,'dias/'+existing._key), { barbearia:newBarb, funcs:mergedFuncs });
     } else {
-      await push(ref(db, 'dias'), { data, barbearia: barb, func, comissao });
+      const funcsObj = {};
+      entradas.forEach(e=>{ funcsObj[e.funcKey]={ nome:e.nome, valor:e.valor, comissao:e.comissao }; });
+      await push(ref(db,'dias'), { data, barbearia:barb, funcs:funcsObj });
     }
     document.getElementById('dBarb').value = '';
-    document.getElementById('dFunc').value = '';
-    document.getElementById('dComissao').value = 50;
-    document.getElementById('dComissaoLabel').textContent = '50%';
-  } catch (e) {
-    alert('Erro ao salvar: ' + e.message);
-  }
+    document.getElementById('funcEntradas').innerHTML = '';
+    funcEntradasCount = 0;
+    if(funcionarios.length > 0) addFuncEntrada();
+  } catch(e){ alert('Erro ao salvar: '+e.message); }
 };
 
-window.removeDia = async function (key) {
-  if (!confirm('Remover este dia?')) return;
-  try {
-    await remove(ref(db, 'dias/' + key));
-  } catch (e) {
-    alert('Erro ao remover: ' + e.message);
-  }
+window.removeDia = async function(key){
+  if(!confirm('Remover este dia?')) return;
+  try{ await remove(ref(db,'dias/'+key)); } catch(e){ alert('Erro ao remover: '+e.message); }
 };
 
-window.openEdit = function (key) {
+// ── EDIT ──
+window.openEdit = function(key){
   editKey = key;
-  const d = dias.find(x => x._key === key);
-  if (!d) return;
-  document.getElementById('editTitle').textContent = 'Editar ' + fmtD(d.data);
-  document.getElementById('editBarb').value = d.barbearia;
-  document.getElementById('editFunc').value = d.func;
-  const comissaoPct = Math.round((d.comissao !== undefined ? d.comissao : 0.5) * 100);
-  document.getElementById('editComissao').value = comissaoPct;
-  document.getElementById('editComissaoLabel').textContent = comissaoPct + '%';
+  const d = dias.find(x=>x._key===key); if(!d) return;
+  document.getElementById('editTitle').textContent = 'Editar '+fmtD(d.data);
+  document.getElementById('editBarb').value = d.barbearia||0;
+  // Preenche funcionários
+  const container = document.getElementById('editFuncEntradas');
+  container.innerHTML = '';
+  const funcs = d.funcs || {};
+  Object.entries(funcs).forEach(([fk, fv])=>{
+    addEditFuncEntrada(fk, fv.valor, Math.round((fv.comissao||0.5)*100), fv.nome);
+  });
   document.getElementById('editModal').classList.add('show');
 };
 
-window.closeEdit = function () {
-  document.getElementById('editModal').classList.remove('show');
-  editKey = null;
+let editEntradasCount = 0;
+window.addEditFuncEntrada = function(prefuncKey='', preValor=0, prePct=50, preNome=''){
+  const container = document.getElementById('editFuncEntradas');
+  const id = ++editEntradasCount;
+  const opts = funcionarios.map(fn=><option value="${fn._key}" data-comissao="${fn.comissao||0.5}" ${fn._key===prefuncKey?'selected':''}>${fn.nome}</option>).join('') ||
+    '<option value="">Nenhum funcionário</option>';
+  const div = document.createElement('div');
+  div.className = 'edit-func-entrada';
+  div.id = 'efe_'+id;
+  div.style.cssText = 'background:#f9fafb;border-radius:10px;padding:10px;margin-bottom:8px;position:relative';
+  div.innerHTML = `
+    <button onclick="removeEditFuncEntrada('efe_${id}')" style="position:absolute;top:8px;right:8px;background:none;border:none;font-size:16px;cursor:pointer;color:var(--secondary)">✕</button>
+    <div class="field" style="margin-bottom:8px"><label>Funcionário</label>
+      <select id="efeFunc_${id}" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px">${opts}</select>
+    </div>
+    <div class="field" style="margin-bottom:8px"><label>Faturamento (R$)</label>
+      <input type="number" id="efeValor_${id}" value="${preValor}" placeholder="0,00" step="0.01" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px">
+    </div>
+    <div class="field" style="margin-bottom:0">
+      <label>Comissão: <strong id="efePctLabel_${id}">${prePct}%</strong></label>
+      <input type="range" id="efePct_${id}" min="0" max="100" value="${prePct}" step="1"
+        style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px"
+        oninput="document.getElementById('efePctLabel_${id}').textContent=this.value+'%'">
+    </div>
+  `;
+  container.appendChild(div);
 };
+window.removeEditFuncEntrada = id => { const el=document.getElementById(id); if(el) el.remove(); };
 
-window.saveEdit = async function () {
-  if (!editKey) return;
+window.closeEdit = function(){ document.getElementById('editModal').classList.remove('show'); editKey=null; editEntradasCount=0; };
+window.saveEdit = async function(){
+  if(!editKey) return;
+  const barb = +(document.getElementById('editBarb').value)||0;
+  const funcsObj = {};
+  document.querySelectorAll('.edit-func-entrada').forEach(div=>{
+    const idMatch = div.id.match(/efe_(\d+)/);
+    if(!idMatch) return;
+    const i = idMatch[1];
+    const fk = document.getElementById('efeFunc_'+i)?.value;
+    const vl = +(document.getElementById('efeValor_'+i)?.value)||0;
+    const cm = +(document.getElementById('efePct_'+i)?.value||50)/100;
+    const fn = funcionarios.find(x=>x._key===fk);
+    if(fn) funcsObj[fk] = { nome:fn.nome, valor:vl, comissao:cm };
+  });
   try {
-    await update(ref(db, 'dias/' + editKey), {
-      barbearia: +(document.getElementById('editBarb').value) || 0,
-      func: +(document.getElementById('editFunc').value) || 0,
-      comissao: +(document.getElementById('editComissao').value) / 100
-    });
+    await update(ref(db,'dias/'+editKey), { barbearia:barb, funcs:funcsObj });
     closeEdit();
-  } catch (e) {
-    alert('Erro ao salvar: ' + e.message);
-  }
+  } catch(e){ alert('Erro ao salvar: '+e.message); }
 };
 
-function renderDias() {
-  document.getElementById('diasCount').textContent = dias.length;
-  if (!dias.length) {
-    document.getElementById('listaDias').innerHTML = '<div class="empty">Nenhum dia cadastrado</div>';
-    return;
+// ── RENDER DIAS ──
+let diasCustomVisible = false;
+window.setDiasMode = function(mode, el){
+  diasFilterMode = mode;
+  document.querySelectorAll('#dia .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const cr = document.getElementById('diasCustomRange');
+  if(mode === 'custom'){
+    cr.style.display = 'grid';
+    diasCustomVisible = true;
+  } else {
+    cr.style.display = 'none';
+    diasCustomVisible = false;
   }
-  let sorted = [...dias].sort((a, b) => b.data.localeCompare(a.data));
-  let gastosByDate = {};
-  gastos.forEach(g => { if (!gastosByDate[g.data]) gastosByDate[g.data] = []; gastosByDate[g.data].push(g); });
+  renderDias();
+};
 
-  document.getElementById('listaDias').innerHTML = sorted.map(d => {
-    let gList = gastosByDate[d.data] || [];
-    let gastosHtml = gList.length
+function getDiasFiltroRange(){
+  if(diasFilterMode === 'mes') return currentMonthRange();
+  const ini = document.getElementById('diasFiltroIni')?.value;
+  const fim = document.getElementById('diasFiltroFim')?.value;
+  return { ini: ini||'', fim: fim||'9999-12-31' };
+}
+
+function renderDias(){
+  const { ini, fim } = getDiasFiltroRange();
+  const filtered = ini ? dias.filter(d=>d.data>=ini && d.data<=fim) : dias;
+  document.getElementById('diasCount').textContent = dias.length;
+  if(!filtered.length){ document.getElementById('listaDias').innerHTML='<div class="empty">Nenhum dia no período</div>'; return; }
+  let sorted = [...filtered].sort((a,b)=>b.data.localeCompare(a.data));
+  let gastosByDate = {};
+  gastos.forEach(g=>{ if(!gastosByDate[g.data]) gastosByDate[g.data]=[]; gastosByDate[g.data].push(g); });
+
+  document.getElementById('listaDias').innerHTML = sorted.map(d=>{
+    const funcs = d.funcs || {};
+    const totalFunc = Object.values(funcs).reduce((s,f)=>s+(f.valor||0), 0);
+    const total = (d.barbearia||0) + totalFunc;
+    const funcsHtml = Object.values(funcs).map(fn=>`
+      <div class="day-card-row">
+        <span><span class="func-tag">👤 ${fn.nome}</span> <span style="font-size:10px;color:var(--blue)">${Math.round((fn.comissao||0.5)*100)}% comissão</span></span>
+        <span>${f(fn.valor||0)}</span>
+      </div>`).join('');
+    const gList = gastosByDate[d.data]||[];
+    const gastosHtml = gList.length
       ? '<div style="margin-top:6px;border-top:1px solid #e5e7eb;padding-top:6px"><div style="font-size:10px;font-weight:600;color:var(--secondary);text-transform:uppercase;margin-bottom:2px">Gastos do dia</div>'
-        + gList.map(g => '<div class="gasto-line"><span class="desc">' + g.descricao + '</span><span style="color:var(--red)">' + f(g.valor) + '</span></div>').join('')
-        + '</div>'
-      : '';
-    let total = (d.barbearia || 0) + (d.func || 0);
-    return '<div class="day-card">'
-      + '<div class="day-card-header"><span class="date">' + fmtD(d.data) + '</span>'
-      + '<div class="actions">'
-      + '<button class="btn btn-sm btn-outline" onclick="openEdit(\'' + d._key + '\')">✏️</button>'
-      + '<button class="btn-red" onclick="removeDia(\'' + d._key + '\')">🗑️</button>'
-      + '</div></div>'
-      + '<div class="day-card-row"><span>Barbearia</span><span>' + f(d.barbearia || 0) + '</span></div>'
-      + '<div class="day-card-row"><span>Funcionário <span style="font-size:10px;color:var(--blue)">' + Math.round((d.comissao !== undefined ? d.comissao : 0.5)*100) + '% comissão</span></span><span>' + f(d.func || 0) + '</span></div>'
-      + '<div class="day-card-row total"><span>Total</span><span>' + f(total) + '</span></div>'
-      + gastosHtml + '</div>';
+        + gList.map(g=>'<div class="gasto-line"><span class="desc">'+g.descricao+'</span><span style="color:var(--red)">'+f(g.valor)+'</span></div>').join('') + '</div>' : '';
+    return `<div class="day-card">
+      <div class="day-card-header">
+        <span class="date">${fmtD(d.data)}</span>
+        <div class="actions">
+          <button class="btn btn-sm btn-outline" onclick="openEdit('${d._key}')">✏️</button>
+          <button class="btn-red" onclick="removeDia('${d._key}')">🗑️</button>
+        </div>
+      </div>
+      <div class="day-card-row"><span>Barbearia</span><span>${f(d.barbearia||0)}</span></div>
+      ${funcsHtml}
+      <div class="day-card-row total"><span>Total</span><span>${f(total)}</span></div>
+      ${gastosHtml}
+    </div>`;
   }).join('');
 }
 
-// ---- GASTOS ----
-window.addGasto = async function () {
-  const data = document.getElementById('gData').value;
-  const desc = document.getElementById('gDesc').value;
-  const valor = +(document.getElementById('gValor').value) || 0;
-  const resp = document.getElementById('gResp').value;
-  if (!data || !valor) return;
+// ── GASTOS ──
+window.addGasto = async function(){
+  const data  = document.getElementById('gData').value;
+  const desc  = document.getElementById('gDesc').value;
+  const valor = +(document.getElementById('gValor').value)||0;
+  const resp  = document.getElementById('gResp').value;
+  if(!data||!valor) return;
   try {
-    await push(ref(db, 'gastos'), { data, descricao: desc, valor, resp });
-    document.getElementById('gDesc').value = '';
-    document.getElementById('gValor').value = '';
-  } catch (e) {
-    alert('Erro ao salvar gasto: ' + e.message);
-  }
+    await push(ref(db,'gastos'), { data, descricao:desc, valor, resp });
+    document.getElementById('gDesc').value='';
+    document.getElementById('gValor').value='';
+  } catch(e){ alert('Erro ao salvar gasto: '+e.message); }
 };
 
-window.removeGasto = async function (key) {
-  if (!confirm('Remover este gasto?')) return;
-  try {
-    await remove(ref(db, 'gastos/' + key));
-  } catch (e) {
-    alert('Erro ao remover: ' + e.message);
-  }
+window.removeGasto = async function(key){
+  if(!confirm('Remover este gasto?')) return;
+  try{ await remove(ref(db,'gastos/'+key)); } catch(e){ alert('Erro ao remover: '+e.message); }
 };
 
-function renderGastos() {
+let gastosCustomVisible = false;
+window.setGastosMode = function(mode, el){
+  gastosFilterMode = mode;
+  document.querySelectorAll('#gastos .period-filter .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const cr = document.getElementById('gastosCustomRange');
+  if(mode === 'custom'){ cr.style.display='grid'; gastosCustomVisible=true; }
+  else { cr.style.display='none'; gastosCustomVisible=false; }
+  renderGastos();
+};
+
+function getGastosFiltroRange(){
+  if(gastosFilterMode === 'mes') return currentMonthRange();
+  const ini = document.getElementById('gastosFiltroIni')?.value;
+  const fim = document.getElementById('gastosFiltroFim')?.value;
+  return { ini: ini||'', fim: fim||'9999-12-31' };
+}
+
+function renderGastos(){
+  const { ini, fim } = getGastosFiltroRange();
+  const filtered = ini ? gastos.filter(g=>g.data>=ini && g.data<=fim) : gastos;
   document.getElementById('gastosCount').textContent = gastos.length;
-  if (!gastos.length) {
-    document.getElementById('listaGastos').innerHTML = '<div class="empty">Nenhum gasto registrado</div>';
-    return;
-  }
+  if(!filtered.length){ document.getElementById('listaGastos').innerHTML='<div class="empty">Nenhum gasto no período</div>'; return; }
   let byDate = {};
-  gastos.forEach(g => { if (!byDate[g.data]) byDate[g.data] = []; byDate[g.data].push(g); });
-  let dates = Object.keys(byDate).sort((a, b) => b.localeCompare(a));
-  const rl = { ambos: 'Ambos', dono: cfg.dono, socio: cfg.socio };
-
-  document.getElementById('listaGastos').innerHTML = dates.map(date => {
+  filtered.forEach(g=>{ if(!byDate[g.data]) byDate[g.data]=[]; byDate[g.data].push(g); });
+  let dates = Object.keys(byDate).sort((a,b)=>b.localeCompare(a));
+  const rl = { ambos:'Ambos', dono:cfg.dono, socio:cfg.socio };
+  document.getElementById('listaGastos').innerHTML = dates.map(date=>{
     let items = byDate[date];
-    let totalDia = items.reduce((s, g) => s + g.valor, 0);
-    return '<div class="day-card">'
-      + '<div class="day-card-header"><span class="date">' + fmtD(date) + '</span><span style="font-size:13px;font-weight:600;color:var(--red)">' + f(totalDia) + '</span></div>'
-      + items.map(g =>
-        '<div class="gasto-line"><span class="desc">' + g.descricao + ' <span style="font-size:10px;color:var(--secondary)">(' + rl[g.resp] + ')</span></span>'
-        + '<span style="display:flex;align-items:center;gap:4px"><span style="color:var(--red)">' + f(g.valor) + '</span>'
-        + '<button class="btn-red" style="padding:2px 6px;font-size:10px" onclick="removeGasto(\'' + g._key + '\')">✕</button></span></div>'
-      ).join('')
+    let totalDia = items.reduce((s,g)=>s+g.valor, 0);
+    return '<div class="day-card"><div class="day-card-header"><span class="date">'+fmtD(date)+'</span><span style="font-size:13px;font-weight:600;color:var(--red)">'+f(totalDia)+'</span></div>'
+      + items.map(g=>'<div class="gasto-line"><span class="desc">'+g.descricao+' <span style="font-size:10px;color:var(--secondary)">('+rl[g.resp||'ambos']+')</span></span>'
+        +'<span style="display:flex;align-items:center;gap:4px"><span style="color:var(--red)">'+f(g.valor)+'</span>'
+        +'<button class="btn-red" style="padding:2px 6px;font-size:10px" onclick="removeGasto(\''+g._key+'\')">✕</button></span></div>').join('')
       + '</div>';
   }).join('');
 }
 
-// ---- FECHAMENTO ----
-function getWeekRange(offset) {
-  let d = new Date(); d.setDate(d.getDate() + offset * 7);
-  let day = d.getDay(), diff = day === 0 ? -6 : 1 - day;
-  let mon = new Date(d); mon.setDate(d.getDate() + diff);
-  let sun = new Date(mon); sun.setDate(mon.getDate() + 6);
-  return { ini: mon.toISOString().split('T')[0], fim: sun.toISOString().split('T')[0] };
+// ── FECHAMENTO ──
+function getWeekRange(offset){
+  let d=new Date(); d.setDate(d.getDate()+offset*7);
+  let day=d.getDay(), diff=day===0?-6:1-day;
+  let mon=new Date(d); mon.setDate(d.getDate()+diff);
+  let sun=new Date(mon); sun.setDate(mon.getDate()+6);
+  const fmt = x => { const y=x.getFullYear(),m=String(x.getMonth()+1).padStart(2,'0'),dd=String(x.getDate()).padStart(2,'0'); return ${y}-${m}-${dd}; };
+  return { ini:fmt(mon), fim:fmt(sun) };
+}
+function getMonthRange(offset){
+  const now=new Date(); const d=new Date(now.getFullYear(), now.getMonth()+offset, 1);
+  const last=new Date(d.getFullYear(),d.getMonth()+1,0);
+  const fmt = x => { const y=x.getFullYear(),m=String(x.getMonth()+1).padStart(2,'0'),dd=String(x.getDate()).padStart(2,'0'); return ${y}-${m}-${dd}; };
+  return { ini:fmt(d), fim:fmt(last) };
 }
 
-function getMonthRange(offset) {
-  let d = new Date(); d.setMonth(d.getMonth() + offset);
-  let first = new Date(d.getFullYear(), d.getMonth(), 1);
-  let last = new Date(d.getFullYear(), d.getMonth() + 1, 0);
-  return { ini: first.toISOString().split('T')[0], fim: last.toISOString().split('T')[0] };
-}
-
-window.setMode = function (m, el) {
-  mode = m; navOffset = 0;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+window.setMode = function(m, el){
+  mode=m; navOffset=0;
+  document.querySelectorAll('#fechamento .filter-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('customRange').style.display = m === 'custom' ? 'block' : 'none';
-  document.getElementById('navRow').style.display = m === 'custom' ? 'none' : 'flex';
+  document.getElementById('customRange').style.display = m==='custom'?'block':'none';
+  document.getElementById('navRow').style.display      = m==='custom'?'none':'flex';
   updatePeriod();
 };
-
-window.navPrev = function () { navOffset--; updatePeriod(); };
-window.navNext = function () { navOffset++; updatePeriod(); };
-
-function updatePeriod() {
-  if (mode === 'custom') return;
-  let r = mode === 'semana' ? getWeekRange(navOffset) : getMonthRange(navOffset);
-  document.getElementById('periodLabel').textContent = fmtD(r.ini) + ' — ' + fmtD(r.fim);
-  document.getElementById('sIni').value = r.ini;
-  document.getElementById('sFim').value = r.fim;
+window.navPrev = ()=>{ navOffset--; updatePeriod(); };
+window.navNext = ()=>{ navOffset++; updatePeriod(); };
+function updatePeriod(){
+  if(mode==='custom') return;
+  let r=mode==='semana'?getWeekRange(navOffset):getMonthRange(navOffset);
+  document.getElementById('periodLabel').textContent=fmtD(r.ini)+' — '+fmtD(r.fim);
+  document.getElementById('sIni').value=r.ini;
+  document.getElementById('sFim').value=r.fim;
 }
 
-window.calcular = function () {
+window.calcular = function(){
   let ini, fim;
-  if (mode === 'custom') {
-    ini = document.getElementById('sIni').value;
-    fim = document.getElementById('sFim').value;
+  if(mode==='custom'){
+    ini=document.getElementById('sIni').value;
+    fim=document.getElementById('sFim').value;
   } else {
-    let r = mode === 'semana' ? getWeekRange(navOffset) : getMonthRange(navOffset);
-    ini = r.ini; fim = r.fim;
+    let r=mode==='semana'?getWeekRange(navOffset):getMonthRange(navOffset);
+    ini=r.ini; fim=r.fim;
   }
-  if (!ini || !fim) return;
+  if(!ini||!fim) return;
 
-  let dsel = dias.filter(d => d.data >= ini && d.data <= fim);
-  let gsel = gastos.filter(g => g.data >= ini && g.data <= fim);
+  const dsel = dias.filter(d=>d.data>=ini&&d.data<=fim);
+  const gsel = gastos.filter(g=>g.data>=ini&&g.data<=fim);
 
-  let totalBarb = 0, totalFunc = 0, totalFuncParaFunc = 0, totalFuncParaBarb = 0;
-  dsel.forEach(d => {
-    const comissao = d.comissao !== undefined ? d.comissao : 0.5;
-    totalBarb += (d.barbearia || 0);
-    totalFunc += (d.func || 0);
-    totalFuncParaFunc += (d.func || 0) * comissao;
-    totalFuncParaBarb += (d.func || 0) * (1 - comissao);
+  let totalBarb=0, totalFuncBruto=0;
+  // Por funcionário: { funcKey: { nome, totalFaturado, totalComissao } }
+  const funcMap = {};
+
+  dsel.forEach(d=>{
+    totalBarb += (d.barbearia||0);
+    const funcs = d.funcs || {};
+    Object.entries(funcs).forEach(([fk, fv])=>{
+      const val = fv.valor||0;
+      const com = fv.comissao||0.5;
+      totalFuncBruto += val;
+      if(!funcMap[fk]) funcMap[fk] = { nome:fv.nome, totalFaturado:0, totalPagarFunc:0, totalParaBarb:0 };
+      funcMap[fk].totalFaturado += val;
+      funcMap[fk].totalPagarFunc += val * com;
+      funcMap[fk].totalParaBarb  += val * (1-com);
+    });
   });
 
-  let fatBruto = totalBarb + totalFunc;
-  let funcParaFunc = totalFuncParaFunc;
-  let funcParaBarb = totalFuncParaBarb;
-  let receitaBarbearia = totalBarb + funcParaBarb;
+  const totalPagarFunc  = Object.values(funcMap).reduce((s,x)=>s+x.totalPagarFunc, 0);
+  const totalFuncParaBarb = Object.values(funcMap).reduce((s,x)=>s+x.totalParaBarb, 0);
+  const receitaBarbearia = totalBarb + totalFuncParaBarb;
 
-  let ga = 0, gv = 0, gs = 0;
-  gsel.forEach(g => {
-    if (g.resp === 'ambos') ga += g.valor;
-    if (g.resp === 'dono') gv += g.valor;
-    if (g.resp === 'socio') gs += g.valor;
+  let ga=0, gv=0, gs=0;
+  gsel.forEach(g=>{
+    if(g.resp==='ambos') ga+=g.valor;
+    if(g.resp==='dono')  gv+=g.valor;
+    if(g.resp==='socio') gs+=g.valor;
   });
-  let gastosTotais = ga + gv + gs;
-  let lucro = receitaBarbearia - ga;
+  const gastosTotais = ga+gv+gs;
+  const fatBruto = totalBarb + totalFuncBruto;
+  const lucro = receitaBarbearia - ga;
 
-  // Divisão: lucro positivo = 60/40 (dono/sócio); prejuízo = 50/50
   const isLucro = lucro >= 0;
-  const pctDono = isLucro ? 0.6 : 0.5;
-  const pctSocio = isLucro ? 0.4 : 0.5;
-  const lblDonoPct = isLucro ? '60%' : '50%';
-  const lblSocioPct = isLucro ? '40%' : '50%';
-  const splitLabel = isLucro ? '(lucro → 60/40)' : '(prejuízo → 50/50)';
+  const pctDono=isLucro?0.6:0.5, pctSocio=isLucro?0.4:0.5;
+  const lblDonoPct=isLucro?'60%':'50%', lblSocioPct=isLucro?'40%':'50%';
+  const splitLabel=isLucro?'(lucro → 60/40)':'(prejuízo → 50/50)';
 
-  let voce60 = lucro * pctDono;
-  let socio40 = lucro * pctSocio;
-  let voceFinal = voce60 - gv;
-  let socioFinal = socio40 - gs;
+  const voce60=lucro*pctDono, socio40=lucro*pctSocio;
+  const voceFinal=voce60-gv, socioFinal=socio40-gs;
 
-  document.getElementById('rBruto').textContent = f(fatBruto);
-  document.getElementById('rGastos').textContent = f(gastosTotais);
-  document.getElementById('rPagarFunc').textContent = f(funcParaFunc);
-  document.getElementById('rReceita').textContent = f(receitaBarbearia);
-  document.getElementById('rLucro').textContent = f(lucro);
-  document.getElementById('rLucro').style.color = isLucro ? 'var(--green)' : 'var(--red)';
-  document.getElementById('rVoce').textContent = f(voceFinal);
-  document.getElementById('rSocio').textContent = f(socioFinal);
-  document.getElementById('lblVoce').textContent = '🧑 ' + cfg.dono + ' (' + lblDonoPct + ')';
-  document.getElementById('lblSocio').textContent = '👥 ' + cfg.socio + ' (' + lblSocioPct + ')';
+  document.getElementById('rBruto').textContent=f(fatBruto);
+  document.getElementById('rGastos').textContent=f(gastosTotais);
+  document.getElementById('rPagarFunc').textContent=f(totalPagarFunc);
+  document.getElementById('rReceita').textContent=f(receitaBarbearia);
+  document.getElementById('rLucro').textContent=f(lucro);
+  document.getElementById('rLucro').style.color=isLucro?'var(--green)':'var(--red)';
+  document.getElementById('rVoce').textContent=f(voceFinal);
+  document.getElementById('rSocio').textContent=f(socioFinal);
+  document.getElementById('lblVoce').textContent='🧑 '+cfg.dono+' ('+lblDonoPct+')';
+  document.getElementById('lblSocio').textContent='👥 '+cfg.socio+' ('+lblSocioPct+')';
 
-  // Linha de aviso de divisão
-  const splitWarn = document.getElementById('splitWarn');
-  if (splitWarn) {
-    splitWarn.textContent = isLucro ? '✅ Resultado positivo → divisão 60/40 (dono/sócio)' : '⚠️ Resultado negativo → divisão 50/50';
-    splitWarn.style.color = isLucro ? 'var(--green)' : 'var(--red)';
+  const splitWarn=document.getElementById('splitWarn');
+  if(splitWarn){
+    splitWarn.textContent=isLucro?'✅ Resultado positivo → divisão 60/40 (dono/sócio)':'⚠️ Resultado negativo → divisão 50/50';
+    splitWarn.style.color=isLucro?'var(--green)':'var(--red)';
   }
 
-  // Comissão média ponderada do período
-  const comissaoMedia = totalFunc > 0 ? (totalFuncParaFunc / totalFunc * 100).toFixed(0) : 50;
-  document.getElementById('ddFuncFunc').textContent = '− ' + f(funcParaFunc) + ' (' + comissaoMedia + '%)';
-  document.getElementById('ddFuncBarb').textContent = f(funcParaBarb) + ' (' + (100 - +comissaoMedia) + '%)';
+  document.getElementById('ddBarb').textContent=f(totalBarb);
+  document.getElementById('ddFuncBruto').textContent=f(totalFuncBruto);
+  document.getElementById('ddFuncFunc').textContent='− '+f(totalPagarFunc);
+  document.getElementById('ddFuncBarb').textContent=f(totalFuncParaBarb);
 
-  document.getElementById('ddBarb').textContent = f(totalBarb);
-  document.getElementById('ddFuncBruto').textContent = f(totalFunc);
-  document.getElementById('ddReceita').textContent = f(receitaBarbearia);
-  document.getElementById('ddGastos').textContent = '− ' + f(ga);
-  document.getElementById('ddLucro').textContent = f(lucro);
-  document.getElementById('ddLucro').style.color = isLucro ? 'var(--green)' : 'var(--red)';
-  document.getElementById('ddVoceLbl').textContent = cfg.dono + ' (' + lblDonoPct + ' do lucro) ' + splitLabel;
-  document.getElementById('ddVoce').textContent = f(voce60);
-  document.getElementById('ddGVLbl').textContent = '− Gastos só ' + cfg.dono;
-  document.getElementById('ddGV').textContent = gv ? '− ' + f(gv) : '—';
-  document.getElementById('ddVoceFLbl').textContent = '= ' + cfg.dono + ' recebe';
-  document.getElementById('ddVoceFinal').textContent = f(voceFinal);
-  document.getElementById('ddSocioLbl').textContent = cfg.socio + ' (' + lblSocioPct + ' do lucro) ' + splitLabel;
-  document.getElementById('ddSocio').textContent = f(socio40);
-  document.getElementById('ddGSLbl').textContent = '− Gastos só ' + cfg.socio;
-  document.getElementById('ddGS').textContent = gs ? '− ' + f(gs) : '—';
-  document.getElementById('ddSocioFLbl').textContent = '= ' + cfg.socio + ' recebe';
-  document.getElementById('ddSocioFinal').textContent = f(socioFinal);
+  // Detalhamento por funcionário
+  const funcEntries = Object.values(funcMap);
+  const detalhe = document.getElementById('ddFuncDetalhe');
+  if(funcEntries.length){
+    detalhe.innerHTML = funcEntries.map(fn=>`
+      <div class="detail-row" style="padding-left:8px;font-size:12px">
+        <span class="lbl"><span class="func-tag">👤 ${fn.nome}</span> faturou ${f(fn.totalFaturado)}</span>
+        <span class="val" style="color:var(--orange)">recebe ${f(fn.totalPagarFunc)}</span>
+      </div>`).join('');
+  } else { detalhe.innerHTML=''; }
 
-  const rl = { ambos: 'Ambos', dono: cfg.dono, socio: cfg.socio };
-  if (dsel.length) {
-    document.getElementById('recDiasList').innerHTML = [...dsel].sort((a, b) => a.data.localeCompare(b.data)).map(d => {
-      const pct = Math.round((d.comissao !== undefined ? d.comissao : 0.5) * 100);
-      return '<div class="record-item"><span>' + fmtD(d.data) + '</span><span>Barb: ' + f(d.barbearia || 0) + ' | Func: ' + f(d.func || 0) + ' <span style="color:var(--blue);font-size:10px">(' + pct + '%)</span></span></div>';
+  document.getElementById('ddReceita').textContent=f(receitaBarbearia);
+  document.getElementById('ddGastos').textContent='− '+f(ga);
+  document.getElementById('ddLucro').textContent=f(lucro);
+  document.getElementById('ddLucro').style.color=isLucro?'var(--green)':'var(--red)';
+  document.getElementById('ddVoceLbl').textContent=cfg.dono+' ('+lblDonoPct+' do lucro) '+splitLabel;
+  document.getElementById('ddVoce').textContent=f(voce60);
+  document.getElementById('ddGVLbl').textContent='− Gastos só '+cfg.dono;
+  document.getElementById('ddGV').textContent=gv?'− '+f(gv):'—';
+  document.getElementById('ddVoceFLbl').textContent='= '+cfg.dono+' recebe';
+  document.getElementById('ddVoceFinal').textContent=f(voceFinal);
+  document.getElementById('ddSocioLbl').textContent=cfg.socio+' ('+lblSocioPct+' do lucro) '+splitLabel;
+  document.getElementById('ddSocio').textContent=f(socio40);
+  document.getElementById('ddGSLbl').textContent='− Gastos só '+cfg.socio;
+  document.getElementById('ddGS').textContent=gs?'− '+f(gs):'—';
+  document.getElementById('ddSocioFLbl').textContent='= '+cfg.socio+' recebe';
+  document.getElementById('ddSocioFinal').textContent=f(socioFinal);
+
+  const rl={ambos:'Ambos', dono:cfg.dono, socio:cfg.socio};
+  if(dsel.length){
+    document.getElementById('recDiasList').innerHTML=[...dsel].sort((a,b)=>a.data.localeCompare(b.data)).map(d=>{
+      const funcs=d.funcs||{};
+      const funcLines = Object.values(funcs).map(fn=>` | <span class="func-tag">👤 ${fn.nome}</span> ${f(fn.valor||0)}`).join('');
+      return '<div class="record-item"><span>'+fmtD(d.data)+'</span><span>Barb: '+f(d.barbearia||0)+funcLines+'</span></div>';
     }).join('');
   } else {
-    document.getElementById('recDiasList').innerHTML = '<div class="empty">Nenhum dia no período</div>';
+    document.getElementById('recDiasList').innerHTML='<div class="empty">Nenhum dia no período</div>';
   }
 
-  if (gsel.length) {
-    let byDate = {};
-    gsel.forEach(g => { if (!byDate[g.data]) byDate[g.data] = []; byDate[g.data].push(g); });
-    let dates = Object.keys(byDate).sort();
-    document.getElementById('recGastosList').innerHTML = dates.map(date => {
-      let items = byDate[date];
-      return '<div style="margin-bottom:6px"><div style="font-size:12px;font-weight:600">' + fmtD(date) + '</div>'
-        + items.map(g => '<div class="record-item"><span>' + g.descricao + ' (' + rl[g.resp] + ')</span><span style="color:var(--red)">' + f(g.valor) + '</span></div>').join('')
-        + '</div>';
+  if(gsel.length){
+    let byDate={};
+    gsel.forEach(g=>{ if(!byDate[g.data]) byDate[g.data]=[]; byDate[g.data].push(g); });
+    let dates=Object.keys(byDate).sort();
+    document.getElementById('recGastosList').innerHTML=dates.map(date=>{
+      let items=byDate[date];
+      return '<div style="margin-bottom:6px"><div style="font-size:12px;font-weight:600">'+fmtD(date)+'</div>'
+        +items.map(g=>'<div class="record-item"><span>'+g.descricao+' ('+rl[g.resp||'ambos']+')</span><span style="color:var(--red)">'+f(g.valor)+'</span></div>').join('')
+        +'</div>';
     }).join('');
   } else {
-    document.getElementById('recGastosList').innerHTML = '<div class="empty">Nenhum gasto no período</div>';
+    document.getElementById('recGastosList').innerHTML='<div class="empty">Nenhum gasto no período</div>';
   }
 
-  document.getElementById('resultados').style.display = 'block';
+  document.getElementById('resultados').style.display='block';
 };
 
-// ---- Init ----
+// ── Init dates ──
 document.getElementById('dData').value = todayStr();
 document.getElementById('gData').value = todayStr();
 setFbStatus('connecting');
-showLoading(true);
-initListeners();
 updatePeriod();
 </script>
+
 </body>
 </html>
