@@ -87,17 +87,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 /* ── LOGIN SCREEN ── */
 #loginScreen{
 display:none;position:fixed;inset:0;z-index:500;
-background:linear-gradient(145deg,#0f172a 0%,#1e293b 50%,#0f172a 100%);
+background:linear-gradient(145deg,#eef2ff 0%,#e0e7ff 50%,#f5f6f8 100%);
 align-items:center;justify-content:center;padding:20px;
 }
 #loginScreen.show{display:flex}
 .login-box{
 width:100%;max-width:380px;
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.1);
+background:#fff;
+border:1px solid #e5e7eb;
 border-radius:24px;padding:36px 28px;
-backdrop-filter:blur(20px);
-box-shadow:0 32px 80px rgba(0,0,0,.5);
+box-shadow:0 8px 40px rgba(37,99,235,.10),0 2px 8px rgba(0,0,0,.06);
 animation:loginIn .4s cubic-bezier(.22,1,.36,1);
 }
 @keyframes loginIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
@@ -106,48 +105,48 @@ width:64px;height:64px;border-radius:18px;
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 display:flex;align-items:center;justify-content:center;
 font-size:30px;margin:0 auto 20px;
-box-shadow:0 8px 24px rgba(37,99,235,.4);
+box-shadow:0 8px 24px rgba(37,99,235,.3);
 }
-.login-title{font-size:26px;font-weight:800;color:#fff;text-align:center;letter-spacing:-.5px;margin-bottom:4px}
-.login-sub{font-size:13px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:28px}
+.login-title{font-size:26px;font-weight:800;color:#111827;text-align:center;letter-spacing:-.5px;margin-bottom:4px}
+.login-sub{font-size:13px;color:#6b7280;text-align:center;margin-bottom:28px}
 .login-field{margin-bottom:14px}
-.login-field label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.login-field label{display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .login-field input{
 width:100%;padding:12px 14px;
-background:rgba(255,255,255,.06);
-border:1px solid rgba(255,255,255,.1);
-border-radius:12px;font-size:14px;color:#fff;outline:none;
+background:#f9fafb;
+border:1.5px solid #e5e7eb;
+border-radius:12px;font-size:14px;color:#111827;outline:none;
 transition:border .2s,background .2s;
 }
-.login-field input::placeholder{color:rgba(255,255,255,.25)}
-.login-field input:focus{border-color:rgba(37,99,235,.7);background:rgba(255,255,255,.09)}
+.login-field input::placeholder{color:#9ca3af}
+.login-field input:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
 .login-btn{
 width:100%;padding:13px;margin-top:8px;
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:#fff;font-size:14px;font-weight:700;
 border:none;border-radius:12px;cursor:pointer;
 transition:opacity .2s,transform .1s;
-box-shadow:0 4px 16px rgba(37,99,235,.4);
+box-shadow:0 4px 16px rgba(37,99,235,.25);
 letter-spacing:.2px;
 }
 .login-btn:active{opacity:.85;transform:scale(.99)}
 .login-btn:disabled{opacity:.5;cursor:not-allowed}
 .login-toggle{
-text-align:center;margin-top:18px;font-size:13px;color:rgba(255,255,255,.4);
+text-align:center;margin-top:18px;font-size:13px;color:#6b7280;
 }
-.login-toggle span{color:rgba(99,153,255,.9);cursor:pointer;font-weight:600}
-.login-toggle span:hover{color:#fff}
+.login-toggle span{color:#2563eb;cursor:pointer;font-weight:600}
+.login-toggle span:hover{color:#1d4ed8}
 .login-err{
-background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);
-border-radius:10px;padding:10px 12px;font-size:12px;color:#fca5a5;
+background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);
+border-radius:10px;padding:10px 12px;font-size:12px;color:#dc2626;
 margin-bottom:12px;text-align:center;display:none;
 }
 .login-err.show{display:block}
 .forgot-link{
-display:block;text-align:right;font-size:11px;color:rgba(99,153,255,.7);
+display:block;text-align:right;font-size:11px;color:#2563eb;
 cursor:pointer;margin-top:-6px;margin-bottom:14px;
 }
-.forgot-link:hover{color:#fff}
+.forgot-link:hover{color:#1d4ed8}
 .login-divider{
 display:flex;align-items:center;gap:10px;margin:18px 0;
 color:rgba(255,255,255,.2);font-size:11px;
@@ -155,6 +154,16 @@ color:rgba(255,255,255,.2);font-size:11px;
 .login-divider::before,.login-divider::after{
 content:’’;flex:1;height:1px;background:rgba(255,255,255,.1);
 }
+
+
+/* ── FUNCIONÁRIOS ── */
+.func-tag{display:inline-flex;align-items:center;gap:4px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:#2563eb;margin:2px}
+.func-tag.selected{background:#2563eb;color:#fff;border-color:#2563eb}
+.func-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.func-detail-row{display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:1px dashed #f3f4f6}
+.func-detail-row:last-child{border:none}
+.func-detail-row .fname{color:var(--secondary)}
+.func-detail-row .fval{font-weight:600;color:var(--orange)}
 
 /* user badge no header */
 .user-badge{
@@ -258,7 +267,7 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
 <div id="formForgot" style="display:none">
   <div style="text-align:center;margin-bottom:16px">
     <div style="font-size:32px;margin-bottom:8px">🔑</div>
-    <div style="font-size:13px;color:rgba(255,255,255,.5)">Digite seu e-mail e enviaremos um link para redefinir sua senha.</div>
+    <div style="font-size:13px;color:#6b7280">Digite seu e-mail e enviaremos um link para redefinir sua senha.</div>
   </div>
   <div class="login-field">
     <label>E-mail</label>
@@ -309,6 +318,12 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
       <div class="field"><label>Data</label><input type="date" id="dData"></div>
       <div class="field"><label>Faturamento Barbearia (R$)</label><input type="number" id="dBarb" placeholder="0,00" step="0.01"></div>
       <div class="field"><label>Faturamento Funcionário (R$)</label><input type="number" id="dFunc" placeholder="0,00" step="0.01"></div>
+      <div class="field">
+        <label>Funcionário</label>
+        <select id="dFuncionario" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none" onchange="onFuncionarioChange()">
+          <option value="">— Selecionar funcionário —</option>
+        </select>
+      </div>
       <div class="field">
         <label>Comissão do Funcionário: <strong id="dComissaoLabel">50%</strong></label>
         <input type="range" id="dComissao" min="0" max="100" value="50" step="1" style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px" oninput="document.getElementById('dComissaoLabel').textContent=this.value+'%'">
@@ -370,7 +385,15 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
       <div class="results">
         <div class="result-card rc-green"><div class="label">Faturamento Bruto</div><div class="value" id="rBruto"></div></div>
         <div class="result-card rc-red"><div class="label">Gastos Totais</div><div class="value" id="rGastos"></div></div>
-        <div class="result-card rc-orange"><div class="label">Pagar Funcionário</div><div class="value" id="rPagarFunc"></div></div>
+        <div class="result-card rc-orange rc-full" style="text-align:left">
+          <div class="label" style="margin-bottom:6px">💰 Pagar Funcionário(s)</div>
+          <div class="value" id="rPagarFunc" style="margin-bottom:8px;text-align:center"></div>
+          <div id="rPagarFuncDetalhes" style="display:none">
+            <div style="height:1px;background:rgba(234,88,12,.2);margin:6px 0"></div>
+            <div style="font-size:10px;font-weight:600;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Detalhamento por funcionário</div>
+            <div id="rPagarFuncList"></div>
+          </div>
+        </div>
         <div class="result-card rc-green"><div class="label">Receita Barbearia</div><div class="value" id="rReceita"></div></div>
         <div class="result-card rc-blue rc-full"><div class="label">Lucro (Receita − Gastos)</div><div class="value" id="rLucro"></div></div>
         <div class="result-card rc-green"><div class="label" id="lblVoce">🧑 Dono (60%)</div><div class="value" id="rVoce"></div></div>
@@ -416,6 +439,15 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
       <div class="field"><label>Nome do Dono</label><input type="text" id="cfgDono" placeholder="Ex: João"></div>
       <div class="field"><label>Nome do Sócio</label><input type="text" id="cfgSocio" placeholder="Ex: Pedro"></div>
       <button class="btn btn-green" onclick="saveConfig()">✅ Salvar nomes</button>
+    </div>
+    <div class="card">
+      <div class="card-title">👥 Funcionários</div>
+      <div style="font-size:12px;color:var(--secondary);margin-bottom:10px">Cadastre os funcionários para selecioná-los no faturamento diário.</div>
+      <div id="listaFuncionarios" style="margin-bottom:10px"></div>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="novoFuncionario" placeholder="Nome do funcionário" style="flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none" onkeydown="if(event.key==='Enter')addFuncionario()">
+        <button class="btn" style="width:auto;padding:10px 16px" onclick="addFuncionario()">➕</button>
+      </div>
     </div>
     <div class="card">
       <div class="card-title">👤 Minha conta</div>
@@ -495,7 +527,7 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 
 // ── State ──
-let dias = [], gastos = [], cfg = { dono:"Dono", socio:"Sócio" };
+let dias = [], gastos = [], cfg = { dono:"Dono", socio:"Sócio" }, funcionarios = [];
 let mode = 'semana', navOffset = 0, editKey = null;
 let currentUser = null;
 let dbListenersInit = false;
@@ -579,9 +611,9 @@ window.doForgotSend = async function(){
   try {
     await sendPasswordResetEmail(auth, email);
     showLoginErr('');
-    document.getElementById('loginErr').style.background = 'rgba(22,163,74,.15)';
-    document.getElementById('loginErr').style.borderColor = 'rgba(22,163,74,.3)';
-    document.getElementById('loginErr').style.color = '#86efac';
+    document.getElementById('loginErr').style.background = 'rgba(22,163,74,.08)';
+    document.getElementById('loginErr').style.borderColor = 'rgba(22,163,74,.25)';
+    document.getElementById('loginErr').style.color = '#16a34a';
     document.getElementById('loginErr').textContent = '✅ Link enviado! Verifique seu e-mail.';
     document.getElementById('loginErr').classList.add('show');
   } catch(e){
@@ -665,6 +697,13 @@ function initListeners(){
     if(snap.exists()) cfg=snap.val();
     applyConfig();
   });
+
+  onValue(ref(db,'funcionarios'), snap=>{
+    funcionarios=[];
+    if(snap.exists()) snap.forEach(c=>{ funcionarios.push({_key:c.key,...c.val()}); });
+    renderFuncionarios();
+    updateFuncionarioSelect();
+  });
 }
 
 // ── Config ──
@@ -698,26 +737,41 @@ window.showTab = function(id, el){
 
 // ── DIA ──
 window.addDia = async function(){
-  const data     = document.getElementById('dData').value;
-  const barb     = +(document.getElementById('dBarb').value) || 0;
-  const func     = +(document.getElementById('dFunc').value) || 0;
-  const comissao = +(document.getElementById('dComissao').value)/100;
+  const data        = document.getElementById('dData').value;
+  const barb        = +(document.getElementById('dBarb').value) || 0;
+  const func        = +(document.getElementById('dFunc').value) || 0;
+  const comissao    = +(document.getElementById('dComissao').value)/100;
+  const funcSel     = document.getElementById('dFuncionario');
+  const funcKey     = funcSel ? funcSel.value : '';
+  const funcObj     = funcionarios.find(f=>f._key===funcKey);
+  const funcNome    = funcObj ? funcObj.nome : '';
   if(!data) return;
   try {
+    // Save per-employee entry under dias/{date}/funcionariosDetalhe
     const existing = dias.find(d=>d.data===data);
     if(existing){
       const prevFunc     = existing.func || 0;
       const prevComissao = existing.comissao !== undefined ? existing.comissao : 0.5;
       const totalFunc    = prevFunc + func;
       const newComissao  = totalFunc>0 ? ((prevFunc*prevComissao)+(func*comissao))/totalFunc : comissao;
-      await update(ref(db,'dias/'+existing._key),{ barbearia:(existing.barbearia||0)+barb, func:totalFunc, comissao:newComissao });
+      // Merge employee detail
+      let det = existing.funcionariosDetalhe ? {...existing.funcionariosDetalhe} : {};
+      if(funcNome){
+        const fk = funcKey || funcNome;
+        if(det[fk]){ det[fk] = { nome:funcNome, valor:(det[fk].valor||0)+func, comissao }; }
+        else { det[fk] = { nome:funcNome, valor:func, comissao }; }
+      }
+      await update(ref(db,'dias/'+existing._key),{ barbearia:(existing.barbearia||0)+barb, func:totalFunc, comissao:newComissao, funcionariosDetalhe:det });
     } else {
-      await push(ref(db,'dias'), { data, barbearia:barb, func, comissao });
+      let det = {};
+      if(funcNome){ det[funcKey||funcNome] = { nome:funcNome, valor:func, comissao }; }
+      await push(ref(db,'dias'), { data, barbearia:barb, func, comissao, funcionariosDetalhe: Object.keys(det).length ? det : null });
     }
     document.getElementById('dBarb').value='';
     document.getElementById('dFunc').value='';
     document.getElementById('dComissao').value=50;
     document.getElementById('dComissaoLabel').textContent='50%';
+    if(funcSel) funcSel.value='';
   } catch(e){ alert('Erro ao salvar: '+e.message); }
 };
 
@@ -750,6 +804,52 @@ window.saveEdit = async function(){
     });
     closeEdit();
   } catch(e){ alert('Erro ao salvar: '+e.message); }
+};
+
+// ── FUNCIONÁRIOS ──
+window.addFuncionario = async function(){
+  const nome = document.getElementById('novoFuncionario').value.trim();
+  if(!nome) return;
+  try {
+    const exists = funcionarios.find(f=>f.nome.toLowerCase()===nome.toLowerCase());
+    if(exists){ alert('Funcionário já cadastrado.'); return; }
+    await push(ref(db,'funcionarios'), { nome, comissaoPadrao: 0.5 });
+    document.getElementById('novoFuncionario').value = '';
+  } catch(e){ alert('Erro ao salvar: '+e.message); }
+};
+
+window.removeFuncionario = async function(key){
+  if(!confirm('Remover este funcionário?')) return;
+  try{ await remove(ref(db,'funcionarios/'+key)); } catch(e){ alert('Erro ao remover: '+e.message); }
+};
+
+function renderFuncionarios(){
+  const el = document.getElementById('listaFuncionarios');
+  if(!el) return;
+  if(!funcionarios.length){ el.innerHTML='<div class="empty" style="padding:8px 0">Nenhum funcionário cadastrado</div>'; return; }
+  el.innerHTML = funcionarios.map(f=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px">
+      <span style="font-weight:600">👤 ${f.nome}</span>
+      <button class="btn-red" style="padding:4px 8px;font-size:11px" onclick="removeFuncionario('${f._key}')">✕</button>
+    </div>`).join('');
+}
+
+function updateFuncionarioSelect(){
+  const sel = document.getElementById('dFuncionario');
+  if(!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Selecionar funcionário —</option>'
+    + funcionarios.map(f=>`<option value="${f._key}" data-comissao="${Math.round((f.comissaoPadrao||0.5)*100)}">${f.nome}</option>`).join('');
+  if(cur) sel.value = cur;
+}
+
+window.onFuncionarioChange = function(){
+  const sel = document.getElementById('dFuncionario');
+  const opt = sel.options[sel.selectedIndex];
+  if(opt && opt.dataset.comissao){
+    document.getElementById('dComissao').value = opt.dataset.comissao;
+    document.getElementById('dComissaoLabel').textContent = opt.dataset.comissao+'%';
+  }
 };
 
 function renderDias(){
@@ -899,6 +999,30 @@ window.calcular = function(){
   document.getElementById('rBruto').textContent=f(fatBruto);
   document.getElementById('rGastos').textContent=f(gastosTotais);
   document.getElementById('rPagarFunc').textContent=f(funcParaFunc);
+
+  // Build per-employee breakdown
+  const empMap = {};
+  dsel.forEach(d=>{
+    if(d.funcionariosDetalhe){
+      Object.values(d.funcionariosDetalhe).forEach(e=>{
+        if(!e||!e.nome) return;
+        if(!empMap[e.nome]) empMap[e.nome]={valor:0,comissao:e.comissao||0.5};
+        empMap[e.nome].valor += (e.valor||0);
+        empMap[e.nome].comissao = e.comissao||0.5; // last known
+      });
+    }
+  });
+  const empEntries = Object.entries(empMap);
+  const detEl = document.getElementById('rPagarFuncDetalhes');
+  const listEl = document.getElementById('rPagarFuncList');
+  if(empEntries.length && detEl && listEl){
+    detEl.style.display='block';
+    listEl.innerHTML = empEntries.map(([nome,info])=>{
+      const recebe = info.valor * info.comissao;
+      const pct = Math.round(info.comissao*100);
+      return `<div class="func-detail-row"><span class="fname">👤 ${nome} (${pct}%)</span><span class="fval">${f(recebe)}</span></div>`;
+    }).join('');
+  } else if(detEl) { detEl.style.display='none'; }
   document.getElementById('rReceita').textContent=f(receitaBarbearia);
   document.getElementById('rLucro').textContent=f(lucro);
   document.getElementById('rLucro').style.color=isLucro?'var(--green)':'var(--red)';
