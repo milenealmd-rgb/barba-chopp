@@ -978,10 +978,15 @@ function renderGastos(){
 
 // ── FECHAMENTO ──
 function getWeekRange(offset){
-  let d=new Date(); d.setDate(d.getDate()+offset*7);
-  let day=d.getDay(), diff=day===0?-6:1-day;
-  let mon=new Date(d); mon.setDate(d.getDate()+diff);
-  let sun=new Date(mon); sun.setDate(mon.getDate()+6);
+  let today=new Date();
+  // Find Monday of current week (day 0=Sun → go back 6, day 1=Mon → 0, etc.)
+  let day=today.getDay();
+  let diffToMon = day===0 ? -6 : 1-day;
+  let mon=new Date(today);
+  mon.setDate(today.getDate()+diffToMon + offset*7);
+  mon.setHours(0,0,0,0);
+  let sun=new Date(mon);
+  sun.setDate(mon.getDate()+6);
   return { ini:mon.toISOString().split('T')[0], fim:sun.toISOString().split('T')[0] };
 }
 
