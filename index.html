@@ -156,6 +156,26 @@ content:’’;flex:1;height:1px;background:rgba(255,255,255,.1);
 }
 
 
+
+/* ── ESTOQUE ── */
+.produto-card{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.produto-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.produto-nome{font-weight:700;font-size:14px;color:var(--primary)}
+.produto-cat{font-size:10px;font-weight:600;text-transform:uppercase;padding:2px 8px;border-radius:20px;letter-spacing:.4px}
+.cat-pomada{background:#ede9fe;color:#7c3aed}
+.cat-bebida{background:#fef3c7;color:#d97706}
+.cat-outro{background:#e0f2fe;color:#0284c7}
+.produto-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px}
+.produto-info-item{text-align:center;background:#fff;border-radius:8px;padding:4px 6px}
+.produto-info-item .pi-label{color:var(--secondary);font-size:10px}
+.produto-info-item .pi-val{font-weight:700;font-size:13px}
+.qtd-baixa{color:var(--red)!important}
+.venda-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px}
+.venda-line:last-child{border:none}
+.rc-purple{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1px solid #ddd6fe}
+.rc-purple .label{color:#7c3aed}
+.rc-purple .value{color:#6d28d9}
+
 /* ── FUNCIONÁRIOS ── */
 .func-tag{display:inline-flex;align-items:center;gap:4px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:#2563eb;margin:2px}
 .func-tag.selected{background:#2563eb;color:#fff;border-color:#2563eb}
@@ -306,6 +326,7 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
   <div class="tabs">
     <div class="tab active" onclick="showTab('dia',this)">📅 Dia</div>
     <div class="tab" onclick="showTab('gastos',this)">🧾 Gastos</div>
+    <div class="tab" onclick="showTab('estoque',this)">📦 Estoque</div>
     <div class="tab" onclick="showTab('fechamento',this)">📊 Fechamento</div>
     <div class="tab" onclick="showTab('config',this)">⚙️</div>
   </div>
@@ -394,6 +415,24 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
             <div id="rPagarFuncList"></div>
           </div>
         </div>
+        <div class="result-card rc-purple rc-full" style="text-align:left" id="rProdutosCard">
+          <div class="label" style="margin-bottom:6px">📦 Produtos</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <div style="text-align:center">
+              <div style="font-size:10px;color:#7c3aed;font-weight:600;text-transform:uppercase;margin-bottom:2px">Faturamento</div>
+              <div class="value" id="rProdutos" style="font-size:18px"></div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:10px;color:#16a34a;font-weight:600;text-transform:uppercase;margin-bottom:2px">Lucro líquido</div>
+              <div class="value" id="rLucroProd" style="font-size:18px;color:var(--green)"></div>
+            </div>
+          </div>
+          <div id="rProdutosDetalhes" style="display:none">
+            <div style="height:1px;background:rgba(109,40,217,.2);margin:6px 0"></div>
+            <div style="font-size:10px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Detalhamento por produto</div>
+            <div id="rProdutosList"></div>
+          </div>
+        </div>
         <div class="result-card rc-green"><div class="label">Receita Barbearia</div><div class="value" id="rReceita"></div></div>
         <div class="result-card rc-blue"><div class="label">Lucro (Receita − Gastos)</div><div class="value" id="rLucro"></div></div>
         <div class="result-card rc-green"><div class="label" id="lblVoce">🧑 Dono (60%)</div><div class="value" id="rVoce"></div></div>
@@ -405,10 +444,15 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
     <div class="card-title">📋 Detalhamento</div>
     <div class="detail-row"><span class="lbl">Faturamento Barbearia</span><span class="val" id="ddBarb"></span></div>
     <div class="detail-row"><span class="lbl">Faturamento Func (bruto)</span><span class="val" id="ddFuncBruto"></span></div>
-    <div class="detail-row"><span class="lbl">→ Funcionário (comissão)</span><span class="val orange" id="ddFuncFunc"></span></div>
+    <div class="detail-row"><span class="lbl">→ Comissão funcionários</span><span class="val orange" id="ddFuncFunc"></span></div>
     <div class="detail-row"><span class="lbl">→ Barbearia (restante)</span><span class="val green" id="ddFuncBarb"></span></div>
     <div class="divider"></div>
-    <div class="detail-row"><span class="lbl">= Receita barbearia (barb + parte func)</span><span class="val green" id="ddReceita"></span></div>
+    <div class="detail-row"><span class="lbl">📦 Vendas de produtos (bruto)</span><span class="val" id="ddVendas"></span></div>
+    <div class="detail-row"><span class="lbl">→ Comissão func (produtos)</span><span class="val orange" id="ddComissaoProd"></span></div>
+    <div class="detail-row"><span class="lbl">→ Custo dos produtos</span><span class="val red" id="ddCustoProd"></span></div>
+    <div class="detail-row"><span class="lbl">→ Lucro produtos</span><span class="val green" id="ddLucroProd"></span></div>
+    <div class="divider"></div>
+    <div class="detail-row"><span class="lbl">= Receita barbearia total</span><span class="val green" id="ddReceita"></span></div>
     <div class="detail-row"><span class="lbl">− Gastos compartilhados</span><span class="val red" id="ddGastos"></span></div>
     <div class="detail-row total"><span class="lbl">= Lucro</span><span class="val green" id="ddLucro"></span></div>
     <div class="divider"></div>
@@ -497,6 +541,101 @@ animation:slideUp .25s cubic-bezier(.22,1,.36,1);
   </div>
 </div>
 
+
+<!-- ESTOQUE -->
+<div id="estoque" class="panel">
+
+  <!-- Header com botão -->
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px">
+    <div>
+      <div style="font-weight:700;font-size:15px">📦 Estoque</div>
+      <div id="estoqueResumo" style="font-size:11px;color:var(--secondary);margin-top:2px">—</div>
+    </div>
+    <button class="btn" style="width:auto;padding:10px 18px;font-size:13px" onclick="openProdutoModal()">➕ Novo produto</button>
+  </div>
+
+  <!-- MODAL CADASTRAR PRODUTO -->
+  <div id="produtoModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.45);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeProdutoModal()">
+    <div style="background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.22,1,.36,1)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <span style="font-size:16px;font-weight:700">📦 Cadastrar Produto</span>
+        <button onclick="closeProdutoModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--secondary)">✕</button>
+      </div>
+      <div class="field"><label>Nome do produto</label><input type="text" id="eNome" placeholder="Ex: Pomada Modeladora"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>Categoria</label>
+          <select id="eCategoria" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none">
+            <option value="pomada">💈 Pomada</option>
+            <option value="bebida">🍺 Bebida</option>
+            <option value="outro">📦 Outro</option>
+          </select>
+        </div>
+        <div class="field"><label>Qtd. em estoque</label><input type="number" id="eQtd" placeholder="0" min="0" step="1"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>Preço de custo (R$)</label><input type="number" id="eCusto" placeholder="0,00" step="0.01"></div>
+        <div class="field"><label>Preço de venda (R$)</label><input type="number" id="eVenda" placeholder="0,00" step="0.01"></div>
+      </div>
+      <div class="field">
+        <label>Tipo de comissão do funcionário</label>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button id="btnComissaoPct" onclick="setComissaoTipo('pct')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;font-size:12px;font-weight:600;cursor:pointer">% Porcentagem</button>
+          <button id="btnComissaoVal" onclick="setComissaoTipo('val')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:#f9fafb;color:var(--primary);font-size:12px;font-weight:600;cursor:pointer">R$ Valor fixo</button>
+        </div>
+        <div id="comissaoPctField">
+          <label style="font-size:11px;color:var(--secondary)">Porcentagem: <strong id="eComissaoLabel">0%</strong></label>
+          <input type="range" id="eComissao" min="0" max="100" value="0" step="1" style="width:100%;accent-color:var(--blue);cursor:pointer;margin-top:4px" oninput="document.getElementById('eComissaoLabel').textContent=this.value+'%'">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--secondary);margin-top:2px"><span>0%</span><span>50%</span><span>100%</span></div>
+        </div>
+        <div id="comissaoValField" style="display:none">
+          <input type="number" id="eComissaoValor" placeholder="Ex: 5,00" step="0.01" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;outline:none">
+          <div style="font-size:10px;color:var(--secondary);margin-top:4px">Valor fixo pago ao funcionário por unidade vendida</div>
+        </div>
+      </div>
+      <button class="btn btn-green" style="margin-top:4px" onclick="addProduto()">✅ Cadastrar produto</button>
+    </div>
+  </div>
+
+  <!-- Lista de produtos -->
+  <div class="card">
+    <div class="card-title">🗂️ Produtos em Estoque</div>
+    <div id="listaProdutos"><div class="empty">Nenhum produto cadastrado</div></div>
+  </div>
+
+  <!-- Registrar venda -->
+  <div class="card">
+    <div class="card-title">🛒 Registrar Venda</div>
+    <div class="field"><label>Data</label><input type="date" id="vData"></div>
+    <div class="field"><label>Produto</label>
+      <select id="vProduto" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none" onchange="onVendaProdutoChange()">
+        <option value="">— Selecionar produto —</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Quantidade vendida</label><input type="number" id="vQtd" placeholder="1" min="1" step="1" value="1" oninput="calcPreviewVenda()"></div>
+      <div class="field"><label>Preço unitário (R$)</label><input type="number" id="vPrecoUnit" placeholder="0,00" step="0.01" oninput="calcPreviewVenda()"></div>
+    </div>
+    <div class="field"><label>Funcionário que vendeu</label>
+      <select id="vFuncionario" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--primary);outline:none">
+        <option value="">— Selecionar funcionário —</option>
+      </select>
+    </div>
+    <div id="vendaPreview" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--secondary)">Total da venda</span><span id="vpTotal" style="font-weight:700;color:var(--green)"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--secondary)">Comissão funcionário</span><span id="vpComissao" style="font-weight:600;color:var(--orange)"></span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--secondary)">Receita barbearia</span><span id="vpReceita" style="font-weight:600;color:var(--blue)"></span></div>
+    </div>
+    <button class="btn" onclick="registrarVenda()">💰 Registrar venda</button>
+  </div>
+
+  <!-- Histórico de vendas -->
+  <div class="card">
+    <div class="card-title">📋 Histórico de Vendas</div>
+    <div id="listaVendas"><div class="empty">Nenhuma venda registrada</div></div>
+  </div>
+
+</div>
+
 <!-- Firebase SDK -->
 
 <script type="module">
@@ -527,7 +666,7 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 
 // ── State ──
-let dias = [], gastos = [], lancamentos = [], cfg = { dono:"Dono", socio:"Sócio" }, funcionarios = [];
+let dias = [], gastos = [], lancamentos = [], cfg = { dono:"Dono", socio:"Sócio" }, funcionarios = [], produtos = [], vendas = [];
 let mode = 'semana', navOffset = 0, editKey = null;
 let currentUser = null;
 let dbListenersInit = false;
@@ -637,6 +776,12 @@ onAuthStateChanged(auth, user => {
       '📧 <strong>'+user.email+'</strong><br><span style="font-size:11px">UID: '+user.uid+'</span>';
     // init Firebase listeners once
     if(!dbListenersInit){ dbListenersInit = true; initListeners(); }
+    // Pre-select today on all date fields
+    const _today = todayStr();
+    ['dData','gData','vData'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.value = _today;
+    });
   } else {
     // show login
     document.getElementById('app').style.display = 'none';
@@ -709,6 +854,19 @@ function initListeners(){
     lancamentos=[];
     if(snap.exists()) snap.forEach(c=>{ lancamentos.push({_key:c.key,...c.val()}); });
     renderDias();
+  });
+
+  onValue(ref(db,'produtos'), snap=>{
+    produtos=[];
+    if(snap.exists()) snap.forEach(c=>{ produtos.push({_key:c.key,...c.val()}); });
+    renderProdutos();
+    updateVendaProdutoSelect();
+  });
+
+  onValue(ref(db,'vendas'), snap=>{
+    vendas=[];
+    if(snap.exists()) snap.forEach(c=>{ vendas.push({_key:c.key,...c.val()}); });
+    renderVendas();
   });
 }
 
@@ -832,6 +990,227 @@ window.saveEdit = async function(){
   } catch(e){ alert('Erro ao salvar: '+e.message); }
 };
 
+// ── ESTOQUE ──
+const catIcon = {pomada:'💈',bebida:'🍺',outro:'📦'};
+const catLabel = {pomada:'Pomada',bebida:'Bebida',outro:'Outro'};
+
+let _comissaoTipo = 'pct';
+window.setComissaoTipo = function(tipo){
+  _comissaoTipo = tipo;
+  document.getElementById('comissaoPctField').style.display = tipo==='pct'?'block':'none';
+  document.getElementById('comissaoValField').style.display = tipo==='val'?'block':'none';
+  document.getElementById('btnComissaoPct').style.background = tipo==='pct'?'var(--blue)':'#f9fafb';
+  document.getElementById('btnComissaoPct').style.color = tipo==='pct'?'#fff':'var(--primary)';
+  document.getElementById('btnComissaoPct').style.borderColor = tipo==='pct'?'var(--blue)':'var(--border)';
+  document.getElementById('btnComissaoVal').style.background = tipo==='val'?'var(--blue)':'#f9fafb';
+  document.getElementById('btnComissaoVal').style.color = tipo==='val'?'#fff':'var(--primary)';
+  document.getElementById('btnComissaoVal').style.borderColor = tipo==='val'?'var(--blue)':'var(--border)';
+};
+window.openProdutoModal = function(){
+  const m = document.getElementById('produtoModal');
+  m.style.display='flex';
+};
+window.closeProdutoModal = function(){
+  document.getElementById('produtoModal').style.display='none';
+};
+window.addProduto = async function(){
+  const nome     = document.getElementById('eNome').value.trim();
+  const categoria= document.getElementById('eCategoria').value;
+  const qtd      = +(document.getElementById('eQtd').value) || 0;
+  const custo    = +(document.getElementById('eCusto').value) || 0;
+  const venda    = +(document.getElementById('eVenda').value) || 0;
+  // comissao: porcentagem (0-1) ou valor fixo por unidade
+  let comissao, comissaoTipo, comissaoValorFixo;
+  if(_comissaoTipo==='val'){
+    comissaoValorFixo = +(document.getElementById('eComissaoValor').value)||0;
+    comissao = venda>0 ? comissaoValorFixo/venda : 0; // store as fraction for compat
+    comissaoTipo = 'val';
+  } else {
+    comissao = +(document.getElementById('eComissao').value)/100;
+    comissaoTipo = 'pct';
+    comissaoValorFixo = 0;
+  }
+  if(!nome){ alert('Informe o nome do produto.'); return; }
+  try{
+    await push(ref(db,'produtos'),{ nome, categoria, qtd, custo, venda, comissao, comissaoTipo, comissaoValorFixo });
+    // Reset
+    document.getElementById('eNome').value='';
+    document.getElementById('eQtd').value='';
+    document.getElementById('eCusto').value='';
+    document.getElementById('eVenda').value='';
+    document.getElementById('eComissao').value=0;
+    document.getElementById('eComissaoLabel').textContent='0%';
+    if(document.getElementById('eComissaoValor')) document.getElementById('eComissaoValor').value='';
+    closeProdutoModal();
+  } catch(e){ alert('Erro: '+e.message); }
+};
+
+window.removeProduto = async function(key){
+  if(!confirm('Remover este produto?')) return;
+  try{ await remove(ref(db,'produtos/'+key)); } catch(e){ alert('Erro: '+e.message); }
+};
+
+function renderProdutos(){
+  const el = document.getElementById('listaProdutos');
+  if(!el) return;
+  // Update resumo
+  const resumoEl = document.getElementById('estoqueResumo');
+  if(resumoEl){
+    const total = produtos.length;
+    const baixo = produtos.filter(p=>p.qtd<=2).length;
+    resumoEl.textContent = total + ' produto(s)' + (baixo ? ' · ⚠️ '+baixo+' com estoque baixo' : '');
+  }
+  if(!produtos.length){ el.innerHTML='<div class="empty">Nenhum produto cadastrado</div>'; return; }
+  el.innerHTML = produtos.map(p=>{
+    const baixo = p.qtd <= 2;
+    const margem = p.custo>0 ? (((p.venda-p.custo)/p.custo)*100).toFixed(0) : '—';
+    const comissaoLabel = p.comissaoTipo==='val'
+      ? 'R$ '+p.comissaoValorFixo.toFixed(2).replace('.',',')+'/un'
+      : Math.round((p.comissao||0)*100)+'%';
+    return `<div class="produto-card">
+      <div class="produto-card-header">
+        <span class="produto-nome">${catIcon[p.categoria]||'📦'} ${p.nome}</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="produto-cat cat-${p.categoria}">${catLabel[p.categoria]||p.categoria}</span>
+          <button class="btn-red" style="padding:3px 8px;font-size:11px;border-radius:6px" onclick="removeProduto('${p._key}')">✕</button>
+        </div>
+      </div>
+      <div class="produto-info">
+        <div class="produto-info-item">
+          <div class="pi-label">Estoque</div>
+          <div class="pi-val ${baixo?'qtd-baixa':''}">${p.qtd}${baixo?' ⚠️':''}</div>
+        </div>
+        <div class="produto-info-item">
+          <div class="pi-label">Custo</div>
+          <div class="pi-val" style="color:var(--red)">${f(p.custo)}</div>
+        </div>
+        <div class="produto-info-item">
+          <div class="pi-label">Venda</div>
+          <div class="pi-val" style="color:var(--green)">${f(p.venda)}</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--secondary)">
+        <span>Margem: <strong style="color:var(--green)">${margem}%</strong></span>
+        <span>Comissão func: <strong style="color:var(--orange)">${comissaoLabel}</strong></span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateVendaProdutoSelect(){
+  const sel = document.getElementById('vProduto');
+  if(!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Selecionar produto —</option>'
+    + produtos.map(p=>`<option value="${p._key}" data-venda="${p.venda}" data-comissao="${p.comissao||0}" data-qtd="${p.qtd}">${catIcon[p.categoria]||'📦'} ${p.nome} (estoque: ${p.qtd})</option>`).join('');
+  if(cur) sel.value=cur;
+  // Also update funcionário select in venda form
+  const fsel = document.getElementById('vFuncionario');
+  if(fsel){
+    fsel.innerHTML = '<option value="">— Selecionar funcionário —</option>'
+      + funcionarios.map(f=>`<option value="${f._key}">${f.nome}</option>`).join('');
+  }
+}
+
+window.onVendaProdutoChange = function(){
+  const sel = document.getElementById('vProduto');
+  const opt = sel.options[sel.selectedIndex];
+  if(opt && opt.dataset.venda){
+    document.getElementById('vPrecoUnit').value = opt.dataset.venda;
+    calcPreviewVenda();
+  }
+};
+
+window.calcPreviewVenda = function(){
+  const qtd    = +(document.getElementById('vQtd').value)||0;
+  const preco  = +(document.getElementById('vPrecoUnit').value)||0;
+  const sel    = document.getElementById('vProduto');
+  const opt    = sel.options[sel.selectedIndex];
+  const comissao = opt ? +(opt.dataset.comissao)||0 : 0;
+  if(!qtd||!preco){ document.getElementById('vendaPreview').style.display='none'; return; }
+  const total = qtd*preco;
+  const comVal = total*comissao;
+  const recVal = total - comVal;
+  document.getElementById('vendaPreview').style.display='block';
+  document.getElementById('vpTotal').textContent = f(total);
+  document.getElementById('vpComissao').textContent = f(comVal)+' ('+Math.round(comissao*100)+'%)';
+  document.getElementById('vpReceita').textContent = f(recVal);
+};
+
+window.registrarVenda = async function(){
+  const data    = document.getElementById('vData').value;
+  const pKey    = document.getElementById('vProduto').value;
+  const qtd     = +(document.getElementById('vQtd').value)||0;
+  const preco   = +(document.getElementById('vPrecoUnit').value)||0;
+  const fsel    = document.getElementById('vFuncionario');
+  const fKey    = fsel ? fsel.value : '';
+  const fObj    = funcionarios.find(x=>x._key===fKey);
+  const fNome   = fObj ? fObj.nome : '';
+  const produto = produtos.find(p=>p._key===pKey);
+  if(!data){ alert('Informe a data.'); return; }
+  if(!produto){ alert('Selecione um produto.'); return; }
+  if(!qtd||qtd<=0){ alert('Informe a quantidade.'); return; }
+  if(qtd > produto.qtd){ alert('Estoque insuficiente! Disponível: '+produto.qtd); return; }
+  const total    = qtd*preco;
+  let comissaoValor;
+  if(produto.comissaoTipo==='val'){
+    comissaoValor = (produto.comissaoValorFixo||0)*qtd;
+  } else {
+    comissaoValor = total*(produto.comissao||0);
+  }
+  const comissao = total>0 ? comissaoValor/total : 0;
+  try{
+    await push(ref(db,'vendas'),{
+      data, produtoKey:pKey, produtoNome:produto.nome,
+      categoria: produto.categoria,
+      qtd, preco, total, comissao,
+      funcKey: fKey, funcNome: fNome,
+      comissaoValor,
+      receitaBarb: total - comissaoValor
+    });
+    // Decrement stock
+    await update(ref(db,'produtos/'+pKey),{ qtd: produto.qtd - qtd });
+    // Reset
+    document.getElementById('vQtd').value='1';
+    document.getElementById('vPrecoUnit').value='';
+    document.getElementById('vendaPreview').style.display='none';
+    document.getElementById('vProduto').value='';
+    if(fsel) fsel.value='';
+  } catch(e){ alert('Erro: '+e.message); }
+};
+
+window.removeVenda = async function(key, prodKey, qtd){
+  if(!confirm('Cancelar esta venda? O estoque será restaurado.')) return;
+  try{
+    const venda = vendas.find(v=>v._key===key);
+    const prod = produtos.find(p=>p._key===prodKey);
+    const promises = [remove(ref(db,'vendas/'+key))];
+    if(prod) promises.push(update(ref(db,'produtos/'+prodKey),{ qtd:(prod.qtd||0)+qtd }));
+    await Promise.all(promises);
+  } catch(e){ alert('Erro: '+e.message); }
+};
+
+function renderVendas(){
+  const el = document.getElementById('listaVendas');
+  if(!el) return;
+  if(!vendas.length){ el.innerHTML='<div class="empty">Nenhuma venda registrada</div>'; return; }
+  const sorted = [...vendas].sort((a,b)=>b.data.localeCompare(a.data));
+  el.innerHTML = sorted.map(v=>`
+    <div class="venda-line">
+      <div>
+        <div style="font-weight:600;font-size:13px">${catIcon[v.categoria]||'📦'} ${v.produtoNome}</div>
+        <div style="font-size:11px;color:var(--secondary)">${fmtD(v.data)} · ${v.qtd}x ${f(v.preco)} ${v.funcNome?'· 👤 '+v.funcNome:''}</div>
+      </div>
+      <div style="text-align:right;display:flex;align-items:center;gap:8px">
+        <div>
+          <div style="font-weight:700;color:var(--green)">${f(v.total)}</div>
+          ${v.comissaoValor>0?`<div style="font-size:10px;color:var(--orange)">func: ${f(v.comissaoValor)}</div>`:''}
+        </div>
+        <button class="btn-red" style="padding:3px 8px;font-size:11px;border-radius:6px" onclick="removeVenda('${v._key}','${v.produtoKey}',${v.qtd})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
 // ── FUNCIONÁRIOS ──
 window.addFuncionario = async function(){
   const nome = document.getElementById('novoFuncionario').value.trim();
@@ -880,26 +1259,35 @@ window.onFuncionarioChange = function(){
 
 function renderDias(){
   // Collect all unique dates from both dias and lancamentos
-  const allDates = [...new Set([
-    ...dias.map(d=>d.data),
-    ...lancamentos.map(l=>l.data)
-  ])].sort((a,b)=>b.localeCompare(a));
+  // Nothing here - allDatesFinal is built below after vendasByDate
 
-  document.getElementById('diasCount').textContent=allDates.length;
-  if(!allDates.length){
+  let gastosByDate={};
+  gastos.forEach(g=>{ if(!gastosByDate[g.data]) gastosByDate[g.data]=[]; gastosByDate[g.data].push(g); });
+  let vendasByDate={};
+  vendas.forEach(v=>{ if(!vendasByDate[v.data]) vendasByDate[v.data]=[]; vendasByDate[v.data].push(v); });
+
+  // Also include dates from vendas
+  const allDatesSet = new Set([
+    ...dias.map(d=>d.data),
+    ...lancamentos.map(l=>l.data),
+    ...vendas.map(v=>v.data)
+  ]);
+  const allDatesFinal = [...allDatesSet].sort((a,b)=>b.localeCompare(a));
+
+  document.getElementById('diasCount').textContent=allDatesFinal.length;
+  if(!allDatesFinal.length){
     document.getElementById('listaDias').innerHTML='<div class="empty">Nenhum dia cadastrado</div>';
     return;
   }
 
-  let gastosByDate={};
-  gastos.forEach(g=>{ if(!gastosByDate[g.data]) gastosByDate[g.data]=[]; gastosByDate[g.data].push(g); });
-
-  document.getElementById('listaDias').innerHTML=allDates.map(data=>{
+  document.getElementById('listaDias').innerHTML=allDatesFinal.map(data=>{
     const diaDoc = dias.find(d=>d.data===data);
     const barb   = diaDoc ? (diaDoc.barbearia||0) : 0;
     const lancsDodia = lancamentos.filter(l=>l.data===data);
+    const vendasDodia = vendasByDate[data]||[];
     const totalFunc  = lancsDodia.reduce((s,l)=>s+(l.valor||0),0);
-    const total      = barb + totalFunc;
+    const totalProd  = vendasDodia.reduce((s,v)=>s+(v.total||0),0);
+    const total      = barb + totalFunc + totalProd;
     const diaKey     = diaDoc ? diaDoc._key : '';
 
     let lancsHtml = '';
@@ -922,6 +1310,21 @@ function renderDias(){
       ?'<div style="margin-top:6px;border-top:1px solid #e5e7eb;padding-top:6px"><div style="font-size:10px;font-weight:600;color:var(--secondary);text-transform:uppercase;margin-bottom:2px">Gastos do dia</div>'
         +gList.map(g=>'<div class="gasto-line"><span class="desc">'+g.descricao+'</span><span style="color:var(--red)">'+f(g.valor)+'</span></div>').join('')+'</div>':'';
 
+    let vendasHtml='';
+    if(vendasDodia.length){
+      vendasHtml='<div style="margin-top:6px;border-top:1px solid #e5e7eb;padding-top:6px">'
+        +'<div style="font-size:10px;font-weight:600;color:var(--secondary);text-transform:uppercase;margin-bottom:4px">Produtos vendidos</div>'
+        +vendasDodia.map(v=>`
+          <div class="func-detail-row" style="align-items:center">
+            <span class="fname">${catIcon[v.categoria]||'📦'} ${v.produtoNome} <span style="color:var(--secondary);font-size:10px">${v.qtd}x</span>${v.funcNome?'<span style="color:var(--blue);font-size:10px"> · 👤'+v.funcNome+'</span>':''}</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="fval" style="color:#6d28d9">${f(v.total||0)}</span>
+              <button class="btn-red" style="padding:2px 7px;font-size:10px;border-radius:6px" onclick="removeVenda('${v._key}','${v.produtoKey}',${v.qtd})">✕</button>
+            </div>
+          </div>`).join('')
+        +'</div>';
+    }
+
     return `<div class="day-card">
       <div class="day-card-header">
         <span class="date">${fmtD(data)}</span>
@@ -932,8 +1335,9 @@ function renderDias(){
       </div>
       <div class="day-card-row"><span>Barbearia</span><span>${f(barb)}</span></div>
       ${lancsDodia.length ? `<div class="day-card-row"><span>Funcionário(s)</span><span>${f(totalFunc)}</span></div>` : ''}
+      ${vendasDodia.length ? `<div class="day-card-row"><span>Produtos</span><span style="color:#6d28d9">${f(totalProd)}</span></div>` : ''}
       <div class="day-card-row total"><span>Total</span><span>${f(total)}</span></div>
-      ${lancsHtml}${gastosHtml}
+      ${lancsHtml}${vendasHtml}${gastosHtml}
     </div>`;
   }).join('');
 }
@@ -1029,6 +1433,7 @@ window.calcular = function(){
   if(!ini||!fim) return;
 
   let dsel=dias.filter(d=>d.data>=ini&&d.data<=fim);
+  const vsel=vendas.filter(v=>v.data>=ini&&v.data<=fim);
   let gsel=gastos.filter(g=>g.data>=ini&&g.data<=fim);
 
   let totalBarb=0, totalFunc=0, totalFuncParaFunc=0, totalFuncParaBarb=0;
@@ -1043,10 +1448,24 @@ window.calcular = function(){
     totalFuncParaBarb += (l.valor||0)*(1-c);
   });
 
-  let fatBruto=totalBarb+totalFunc;
-  let funcParaFunc=totalFuncParaFunc;
+  // Produtos
+  let totalVendas=0, totalComissaoProd=0, totalReceitaProd=0, totalCustoProd=0, totalLucroProd=0;
+  vsel.forEach(v=>{
+    const produto = produtos.find(p=>p._key===v.produtoKey);
+    const custoUnit = produto ? (produto.custo||0) : 0;
+    const custoTotal = custoUnit * (v.qtd||0);
+    totalVendas      += (v.total||0);
+    totalComissaoProd += (v.comissaoValor||0);
+    totalReceitaProd += (v.receitaBarb||0);
+    totalCustoProd   += custoTotal;
+    totalLucroProd   += (v.total||0) - (v.comissaoValor||0) - custoTotal;
+  });
+
+  let fatBruto=totalBarb+totalFunc+totalVendas;
+  let funcParaFunc=totalFuncParaFunc+totalComissaoProd;
   let funcParaBarb=totalFuncParaBarb;
-  let receitaBarbearia=totalBarb+funcParaBarb;
+  // Receita da barbearia inclui: parte da cadeira + parte dos produtos (sem custo)
+  let receitaBarbearia=totalBarb+funcParaBarb+totalLucroProd;
 
   let ga=0, gv=0, gs=0;
   gsel.forEach(g=>{
@@ -1073,34 +1492,80 @@ window.calcular = function(){
   document.getElementById('rGastos').textContent=f(gastosTotais);
   document.getElementById('rPagarFunc').textContent=f(funcParaFunc);
 
-  // Build per-employee breakdown — each lancamento is a separate line
+  // Build per-employee breakdown — serviços + comissões de produtos
   const empMap = {};
+  // Serviços (lancamentos)
   lsel.forEach(l=>{
     const nome = l.funcNome || 'Sem nome';
-    if(!empMap[nome]) empMap[nome] = [];
-    empMap[nome].push({ valor: l.valor||0, comissao: l.comissao!==undefined ? l.comissao : 0.5 });
+    if(!empMap[nome]) empMap[nome] = { servicos:[], produtos:[] };
+    empMap[nome].servicos.push({ label: f(l.valor||0)+' (serviço)', valor: (l.valor||0)*(l.comissao!==undefined?l.comissao:0.5) });
+  });
+  // Comissões de produtos vendidos
+  vsel.forEach(v=>{
+    if(!v.funcNome || !v.comissaoValor) return;
+    const nome = v.funcNome;
+    if(!empMap[nome]) empMap[nome] = { servicos:[], produtos:[] };
+    empMap[nome].produtos.push({ label: v.produtoNome+' ('+v.qtd+'x)', valor: v.comissaoValor });
   });
   const empEntries = Object.entries(empMap);
   const detEl = document.getElementById('rPagarFuncDetalhes');
   const listEl = document.getElementById('rPagarFuncList');
   if(empEntries.length && detEl && listEl){
     detEl.style.display='block';
-    listEl.innerHTML = empEntries.map(([nome,linhas])=>{
-      // Show each individual lancamento separately
-      const totalRecebe = linhas.reduce((s,l)=>s+l.valor*l.comissao,0);
-      const detLinhas = linhas.map(l=>{
-        const pct = Math.round(l.comissao*100);
-        return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 8px;color:var(--secondary)">
-          <span>↳ R$ ${f(l.valor)} × ${pct}%</span>
-          <span style="color:var(--orange)">${f(l.valor*l.comissao)}</span>
-        </div>`;
-      }).join('');
-      return `<div style="margin-bottom:6px">
+    listEl.innerHTML = empEntries.map(([nome,info])=>{
+      const totalServ = info.servicos.reduce((s,x)=>s+x.valor,0);
+      const totalProd = info.produtos.reduce((s,x)=>s+x.valor,0);
+      const totalRecebe = totalServ + totalProd;
+      const linhasServ = info.servicos.map(x=>`
+        <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 8px;color:var(--secondary)">
+          <span>✂️ ${x.label}</span><span style="color:var(--orange)">${f(x.valor)}</span>
+        </div>`).join('');
+      const linhasProd = info.produtos.map(x=>`
+        <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 8px;color:var(--secondary)">
+          <span>📦 ${x.label}</span><span style="color:#6d28d9">${f(x.valor)}</span>
+        </div>`).join('');
+      return `<div style="margin-bottom:8px">
         <div class="func-detail-row"><span class="fname" style="font-weight:700">👤 ${nome}</span><span class="fval">${f(totalRecebe)}</span></div>
-        ${linhas.length>1?detLinhas:''}
+        ${linhasServ}${linhasProd}
       </div>`;
     }).join('');
   } else if(detEl) { detEl.style.display='none'; }
+  // Produtos card
+  const _rProd = document.getElementById('rProdutos');
+  const _rLucroProd = document.getElementById('rLucroProd');
+  if(_rProd) _rProd.textContent = f(totalVendas);
+  if(_rLucroProd) _rLucroProd.textContent = f(totalLucroProd);
+  const prodDetEl = document.getElementById('rProdutosDetalhes');
+  const prodListEl = document.getElementById('rProdutosList');
+  if(vsel.length && prodDetEl && prodListEl){
+    prodDetEl.style.display='block';
+    // Group by product name, include custo
+    const prodMap={};
+    vsel.forEach(v=>{
+      const prod = produtos.find(p=>p._key===v.produtoKey);
+      const custoUnit = prod ? (prod.custo||0) : 0;
+      const custoTotal = custoUnit*(v.qtd||0);
+      const n=v.produtoNome||'—';
+      if(!prodMap[n]) prodMap[n]={qtd:0,total:0,comissaoValor:0,custoTotal:0,lucro:0,funcNome:v.funcNome||''};
+      prodMap[n].qtd          += v.qtd||0;
+      prodMap[n].total        += v.total||0;
+      prodMap[n].comissaoValor += v.comissaoValor||0;
+      prodMap[n].custoTotal   += custoTotal;
+      prodMap[n].lucro        += (v.total||0)-(v.comissaoValor||0)-custoTotal;
+    });
+    prodListEl.innerHTML = Object.entries(prodMap).map(([nome,info])=>`
+      <div style="margin-bottom:8px">
+        <div class="func-detail-row">
+          <span class="fname" style="font-weight:700">📦 ${nome} <span style="color:var(--secondary);font-size:10px">(${info.qtd}x)</span></span>
+          <span class="fval" style="color:#6d28d9">${f(info.total)}</span>
+        </div>
+        ${info.comissaoValor>0?`<div style="display:flex;justify-content:space-between;font-size:11px;padding:1px 8px;color:var(--secondary)"><span>↳ comissão func${info.funcNome?' ('+info.funcNome+')':''}</span><span style="color:var(--orange)">− ${f(info.comissaoValor)}</span></div>`:''}
+        ${info.custoTotal>0?`<div style="display:flex;justify-content:space-between;font-size:11px;padding:1px 8px;color:var(--secondary)"><span>↳ custo</span><span style="color:var(--red)">− ${f(info.custoTotal)}</span></div>`:''}
+        <div style="display:flex;justify-content:space-between;font-size:11px;padding:1px 8px;color:var(--secondary)"><span>↳ lucro líquido</span><span style="color:var(--green);font-weight:600">${f(info.lucro)}</span></div>
+      </div>
+    `).join('');
+  } else if(prodDetEl){ prodDetEl.style.display='none'; }
+
   document.getElementById('rReceita').textContent=f(receitaBarbearia);
   document.getElementById('rLucro').textContent=f(lucro);
   document.getElementById('rLucro').style.color=isLucro?'var(--green)':'var(--red)';
@@ -1116,14 +1581,21 @@ window.calcular = function(){
   }
 
   const comissaoMedia=totalFunc>0?(totalFuncParaFunc/totalFunc*100).toFixed(0):50;
-  document.getElementById('ddFuncFunc').textContent='− '+f(funcParaFunc)+' ('+comissaoMedia+'%)';
-  document.getElementById('ddFuncBarb').textContent=f(funcParaBarb)+' ('+(100-+comissaoMedia)+'%)';
-  document.getElementById('ddBarb').textContent=f(totalBarb);
-  document.getElementById('ddFuncBruto').textContent=f(totalFunc);
-  document.getElementById('ddReceita').textContent=f(receitaBarbearia);
-  document.getElementById('ddGastos').textContent='− '+f(ga);
-  document.getElementById('ddLucro').textContent=f(lucro);
-  document.getElementById('ddLucro').style.color=isLucro?'var(--green)':'var(--red)';
+  // dd setters handled below
+  const _dd = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  _dd('ddBarb',          f(totalBarb));
+  _dd('ddFuncBruto',     f(totalFunc));
+  _dd('ddFuncFunc',      '− '+f(funcParaFunc));
+  _dd('ddFuncBarb',      f(funcParaBarb)+' ('+(100-+comissaoMedia)+'%)');
+  _dd('ddVendas',        f(totalVendas));
+  _dd('ddComissaoProd',  '− '+f(totalComissaoProd));
+  _dd('ddCustoProd',     '− '+f(totalCustoProd));
+  _dd('ddLucroProd',     f(totalLucroProd));
+  _dd('ddReceita',       f(receitaBarbearia));
+  _dd('ddGastos',        '− '+f(ga));
+  _dd('ddLucro',         f(lucro));
+  const ddLucroEl = document.getElementById('ddLucro');
+  if(ddLucroEl) ddLucroEl.style.color=isLucro?'var(--green)':'var(--red)';
   document.getElementById('ddVoceLbl').textContent=cfg.dono+' ('+lblDonoPct+' do lucro) '+splitLabel;
   document.getElementById('ddVoce').textContent=f(voce60);
   document.getElementById('ddGVLbl').textContent='− Gastos só '+cfg.dono;
